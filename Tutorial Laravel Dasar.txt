@@ -1,0 +1,41 @@
+Membuat Model 
+php artisan make:model Guru
+
+Membuat Migration (Tabel)
+php artisan make:migration create_guru_table --create=guru
+
+Membuat Model dan Migration sekaligus
+php artisan make:model Guru -m
+
+Jika Tabel sudah disesuaikan atau diedit jalankan migration
+php artisan migrate
+
+Membuat Middleware
+php artisan make:middleware CheckRole
+
+Mendaftarkan Middleware di Kernel
+protected $routeMiddleware = [
+    // Middleware lainnya...
+    'role' => \App\Http\Middleware\CheckRole::class,
+];
+
+Menggunakan Middleware (routes\web.php)
+Route::middleware(['role:Admin'])->group(function () {
+    Route::get('/admin/dashboard', 'AdminController@index')->name('admin.dashboard');
+});
+
+Membuat Component
+php artisan make:component ButtonCreate
+
+php artisan make:middleware Admin
+php artisan make:middleware Authenticate
+php artisan make:middleware CheckForMaintenanceMode
+php artisan make:middleware EncryptCookies
+php artisan make:middleware Guru
+php artisan make:middleware RedirectAuthenticated
+php artisan make:middleware Siswa
+php artisan make:middleware Trash
+php artisan make:middleware TrimStrings
+php artisan make:middleware TrustProxies
+php artisan make:middleware VerifyCsrfToken
+

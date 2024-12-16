@@ -1,0 +1,15 @@
+    php artisan make:migration create_hari_table --create=hari
+    php artisan make:migration create_guru_table --create=guru
+    php artisan make:migration create_absensi_guru_table --create=absensi_guru
+    php artisan make:migration create_jadwal_table --create=jadwal
+    php artisan make:migration create_kehadiran_table --create=kehadiran
+    php artisan make:migration create_kelas_table --create=kelas
+    php artisan make:migration create_mapel_table --create=mapel
+    php artisan make:migration create_nilai_table --create=nilai
+    php artisan make:migration create_paket_table --create=paket
+    php artisan make:migration create_pengumuman_table --create=pengumuman
+    php artisan make:migration create_rapot_table --create=rapot
+    php artisan make:migration create_ruang_table --create=ruang
+    php artisan make:migration create_siswa_table --create=siswa
+    php artisan make:migration create_ulangan_table --create=ulangan
+    php artisan make:migration create_sikap_table --create=sikap
