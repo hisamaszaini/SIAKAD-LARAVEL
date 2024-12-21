@@ -6,12 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Nilai extends Model
 {
-    protected $fillable = ['guru_id', 'kkm', 'deskripsi_a', 'deskripsi_b', 'deskripsi_c', 'deskripsi_d'];
-
-    public function guru()
-    {
-        return $this->belongsTo('App\Guru')->withDefault();
-    }
+    protected $fillable = ['id', 'id_siswa', 'id_mapel', 'id_guru', 'tugas', 'uts', 'uas', 'nilai_akhir', 'nilai_revisi'];
 
     protected $table = 'nilai';
 }

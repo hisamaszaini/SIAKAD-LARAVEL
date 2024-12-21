@@ -53,7 +53,7 @@
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $absen->kelas->nama_kls }}</td>
                             <td>{{ date("d-m-Y", strtotime($absen->tanggal)) }}</td>
-                            <td>{{ $absen->guru->nama_guru }}</td>
+                            <td>{{ $absen->guru->nama_guru . " " . $absen->guru->gelar  }}</td>
                             <td class="text-center">
                                 <a href="{{ route('guru.absensi.isikehadiran', $absen->id) }}" class="btn btn-warning">Isi Kehadiran</a>
                                 <x-button-edit link="{{ route('guru.absensi.edit', $absen->id) }}" />

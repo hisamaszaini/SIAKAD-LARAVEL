@@ -51,7 +51,7 @@
                             <td>{{ $data->hari->nama_hari }}</td>
                             <td>{{ date("H:i", strtotime($data->jamPelajaran->jam_mulai)) }} - {{ date("H:i", strtotime($data->jamPelajaran->jam_selesai)) }}</td>
                             <td>{{ $data->mapel->nama_mapel }}</td>
-                            <td>{{ $data->guru->nama_guru }}</td>
+                            <td>{{ $data->guru->nama_guru . " " . $data->guru->gelar  }}</td>
                             <td>{{ $data->kelas->nama_kls }}</td>
                             <td>{{ $data->ruang->nama_ruang }}</td>
                             <td class="text-center min-row">

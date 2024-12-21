@@ -30,7 +30,7 @@
 
                         @yield('content')
                         <div class="simple-footer">
-                            Copyright &copy; Larastart {{ date('Y') }}
+                            Copyright &copy; Siakad {{ date('Y') }}
                         </div>
                     </div>
                 </div>

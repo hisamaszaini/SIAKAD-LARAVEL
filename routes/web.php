@@ -13,7 +13,7 @@ use App\Http\Controllers\AdminKategoriController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SiswaController;
-
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -34,6 +34,9 @@ Route::group(['middleware' => ['auth:web', 'verified']], function () {
 
     //DASHBOARD-MENU
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/profile', [UsersController::class, 'profile'])->name('profile');
+    Route::put('/profile/updatePassword', [UsersController::class, 'updatePassword'])->name('updatePassword');
+    Route::put('/profile/updateEmail', [UsersController::class, 'updateEmail'])->name('updateEmail');
 
     //MASTERING
     // Route::get('/admin/users', [UsersController::class, 'index'])->name('users');
@@ -141,6 +144,7 @@ Route::group(['middleware' => ['auth:web', 'verified']], function () {
     //Siswa
     Route::prefix('siswa')->group(function () {
         Route::get('/biodata', [SiswaController::class, 'biodata'])->name('siswa.biodata');
+        Route::get('/jadwal', [SiswaController::class, 'lihatJadwal'])->name('siswa.jadwal');
         Route::get('/editbiodata', [SiswaController::class, 'editBiodata'])->name('siswa.editbio');
         Route::put('/updatebio', [SiswaController::class, 'updateBiodata'])->name('siswa.updatebio');
     });

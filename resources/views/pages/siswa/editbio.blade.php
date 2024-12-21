@@ -83,7 +83,7 @@
                                 <label for="email">Email <code>*)</code></label>
                                 <input type="email" name="email" id="email"
                                     class="form-control @error('email') is-invalid @enderror" 
-                                    value="{{ old('email', $user->email) }}" required>
+                                    value="{{ old('email', $authSam->email) }}" required>
                                 @error('email')
                                 <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror
@@ -179,7 +179,7 @@
 
                         <div class="form-group mt-3">
                             <button type="submit" class="btn btn-primary">Update</button>
-                            <a href="{{ route('dashboard') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ route('siswa.biodata') }}" class="btn btn-secondary">Kembali</a>
                         </div>
                     </form>
                 </div>

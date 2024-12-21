@@ -18,7 +18,6 @@ class AdminKelasController extends Controller
         $cari = $request->get('cari');
 
         if ($cari) {
-            // Mengambil kelas berdasarkan nama kelas atau nama guru
             $datas = Kelas::where('nama_kls', 'like', '%' . $cari . '%')
                 ->orWhereHas('guru', function ($query) use ($cari) {
                     $query->where('nama_guru', 'like', '%' . $cari . '%');

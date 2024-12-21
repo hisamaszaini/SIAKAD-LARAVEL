@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Siswa;
 use App\Models\User;
+use App\Models\Jadwal;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Storage;
 class SiswaController extends Controller
 {
 
-    public function biodata(){
+    public function biodata()
+    {
         $title = "Biodata";
         $pages = "biodata";
         $authSam = Auth::user();
@@ -31,15 +33,16 @@ class SiswaController extends Controller
         return view('pages.siswa.biodata', compact('title', 'pages', 'authSam', 'siswa', 'orangTua'));
     }
 
-    public function editBiodata(){
+    public function editBiodata()
+    {
         $title = "Edit Biodata";
         $pages = "biodata";
         $authSam = Auth::user();
-        $user = Auth::user();
-        $siswa = $user->siswa;
+        //$user = Auth::user();
+        $siswa = $authSam->siswa;
         $orangTua = $siswa->orangTua()->first();
 
-        return view('pages.siswa.editbio', compact('title', 'pages', 'authSam', 'user', 'siswa', 'orangTua'));
+        return view('pages.siswa.editbio', compact('title', 'pages', 'authSam', 'siswa', 'orangTua'));
     }
 
     public function updateBiodata(Request $request)
@@ -117,5 +120,21 @@ class SiswaController extends Controller
             DB::rollback();
             return redirect()->route('siswa.editbio')->with('error', 'Gagal memperbarui data Anda.');
         }
+    }
+
+    public function lihatJadwal()
+    {
+        $title = "Lihat Jadwal";
+        $pages = "jadwal";
+        $authSam = Auth::user();
+        $siswa = Auth::user()->siswa;
+        $kelas = $siswa->kelas;
+        $datas = Jadwal::with(['mapel', 'ruang', 'guru', 'jamPelajaran', 'hari'])
+            ->where('kelas_id', $kelas->id)
+            ->orderBy('hari_id', 'asc')
+            ->orderBy('jam_pelajaran_id', 'asc')
+            ->get();
+
+        return view('pages.siswa.lihat-jadwal', compact('title', 'pages', 'authSam', 'siswa', 'kelas', 'datas'));
     }
 }

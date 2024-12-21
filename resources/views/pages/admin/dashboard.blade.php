@@ -22,7 +22,7 @@
                         </div>
                         <div class="card-body">
                             {{ $laki+$perempuan }} Siswa
-                            <div class="text-muted text-small"><span class="text-primary"><i class="fas fa-caret-up"></i></span> 0 Kelas</div>
+                            <div class="text-muted text-small"><span class="text-primary"><i class="fas fa-caret-up"></i></span> {{ $kelas->count() }} Kelas</div>
 
                         </div>
                     </div>
@@ -54,7 +54,6 @@
                         </div>
                         <div class="card-body">
                             {{ $mapel->count() }} Mapel
-                            <div class="text-muted text-small"><span class="text-primary"><i class="fas fa-caret-up"></i></span> Total 6 Mapel</div>
                         </div>
                     </div>
                 </div>
@@ -84,9 +83,9 @@
         <div class="card-body">
             <div class="row">
                 @if($pengumuman)
-                <p>{{ $pengumuman->isi }}</p>
+                <p class="ml-3">{{ $pengumuman->isi }}</p>
                 @else
-                <p>Tidak ada pengumuman.</p>
+                <p class="ml-3">Tidak ada pengumuman.</p>
                 @endif
             </div>
         </div>
