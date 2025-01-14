@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Siswa;
 use App\Models\User;
 use App\Models\Jadwal;
+use App\Models\Kelas;
+use App\Models\Mapel;
+use App\Models\Nilai;
+use App\Models\Rapot;
+use App\Models\Penagihan;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -52,6 +57,13 @@ class SiswaController extends Controller
         $orangTua = $siswa->orangTua()->first();
 
         $request->validate([
+            'foto' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg',
+                'max:1024',
+                'dimensions:min_width=300,min_height=300'
+            ],
             'nisn' => 'nullable|string|max:30|unique:siswa,nisn,' . $siswa->id,
             'nama_siswa' => 'required|string|max:50',
             'jk' => 'required|in:L,P',
@@ -59,7 +71,6 @@ class SiswaController extends Controller
             'tmp_lahir' => 'nullable|string|max:50',
             'tgl_lahir' => 'nullable|date',
             'alamat' => 'nullable|string|max:100',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'email' => 'required|email|unique:users,email,' . $user->id,
 
             // Validasi untuk data orang tua
@@ -72,32 +83,41 @@ class SiswaController extends Controller
             'pekerjaan_ibu' => 'nullable|string|max:50',
             'penghasilan_ibu' => 'nullable|numeric',
             'alamat_orang_tua' => 'nullable|string|max:100',
+        ], [
+            'foto.image' => 'File harus berupa gambar',
+            'foto.mimes' => 'Format foto harus jpeg, png, atau jpg',
+            'foto.max' => 'Ukuran foto tidak boleh lebih dari 1MB',
+            'foto.dimensions' => 'Dimensi foto tidak sesuai (min: 300x300)'
         ]);
 
         DB::beginTransaction();
 
         try {
+            $fotoPath = $siswa->foto;
+
             if ($request->hasFile('foto')) {
-                if ($siswa->foto) {
-                    Storage::delete('public/' . $siswa->foto);
+                if ($siswa->foto && Storage::disk('public')->exists($siswa->foto)) {
+                    Storage::disk('public')->delete($siswa->foto);
                 }
-                $fotoPath = $request->file('foto')->store('siswa_fotos', 'public');
-                $siswa->foto = $fotoPath;
+
+                $extension = $request->file('foto')->getClientOriginalExtension();
+                $newFileName = time() . $user->id . '.' . $extension;
+                $fotoPath = $request->file('foto')->storeAs('siswa_fotos', $newFileName, 'public');
             }
 
             $siswa->update([
                 'nisn' => $request->nisn,
-                'nama_siswa' => $request->nama_siswa,
+                'nama' => $request->nama_siswa,
                 'jk' => $request->jk,
                 'telp' => $request->telp,
                 'tmp_lahir' => $request->tmp_lahir,
                 'tgl_lahir' => $request->tgl_lahir,
                 'alamat' => $request->alamat,
-                'foto' => $siswa->foto,
+                'foto' => $fotoPath,
             ]);
 
             $user->name = $request->nama_siswa;
-            $user->email = $request->email;
+            $user->profile_photo_path = $fotoPath;
             $user->save();
 
             if ($orangTua) {
@@ -117,6 +137,7 @@ class SiswaController extends Controller
             DB::commit();
             return redirect()->route('siswa.editbio')->with('success', 'Data Anda berhasil diperbarui!');
         } catch (\Exception $e) {
+            dd($e, $newFileName);
             DB::rollback();
             return redirect()->route('siswa.editbio')->with('error', 'Gagal memperbarui data Anda.');
         }
@@ -136,5 +157,42 @@ class SiswaController extends Controller
             ->get();
 
         return view('pages.siswa.lihat-jadwal', compact('title', 'pages', 'authSam', 'siswa', 'kelas', 'datas'));
+    }
+
+    public function lihatKehadiran()
+    {
+        $title = "Lihat Kehadiran";
+        $pages = "kehadiran";
+        $authSam = Auth::user();
+        $siswa = Auth::user()->siswa;
+        $kelas = $siswa->kelas;
+        $datas = $siswa->kehadiran()->with(['absensi'])->paginate(config('app.pagination'));
+        return view('pages.siswa.lihat-kehadiran', compact('title', 'pages', 'authSam', 'siswa', 'kelas', 'datas'));
+    }
+
+    public function lihatRapot()
+    {
+        $title = "Lihat Rapot";
+        $pages = "rapot";
+        $authSam = Auth::user();
+        $siswa = Auth::user()->siswa;
+        $kelas = $siswa->kelas;
+        $datas = $siswa->rapot()->with(['mapel', 'guru'])->get();
+
+        return view('pages.siswa.lihat-rapot', compact('title', 'pages', 'authSam', 'siswa', 'kelas', 'datas'));
+    }
+
+    public function lihatTagihan()
+    {
+        $title = "Lihat Tagihan";
+        $pages = "tagihan";
+        $authSam = Auth::user();
+        $siswa = $authSam->siswa;
+
+        $tagihan = Penagihan::where('siswa_id', $siswa->id)
+            ->with('tagihan')
+            ->get();
+
+        return view('pages.siswa.lihat-tagihan', compact('title', 'pages', 'authSam', 'siswa', 'tagihan'));
     }
 }

@@ -16,10 +16,10 @@ class AdminRuangController extends Controller
         $cari = $request->get('cari');
 
         if ($cari) {
-            $datas = Ruang::where('nama_ruang', 'like', '%' . $cari . '%')
+            $datas = Ruang::where('nama', 'like', '%' . $cari . '%')
                 ->paginate(config('app.pagination'));
         } else {
-            $datas = Ruang::orderBy('nama_ruang', 'asc')->paginate(config('app.pagination'));
+            $datas = Ruang::orderBy('nama', 'asc')->paginate(config('app.pagination'));
         }
 
         $pages = "ruang";
@@ -39,7 +39,7 @@ class AdminRuangController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_ruang' => 'required|string|max:255',
+            'nama_ruang' => 'required|string|max:255|unique:ruang,nama',
             'jenis' => 'nullable|string|max:50',
         ]);
 
@@ -47,7 +47,7 @@ class AdminRuangController extends Controller
 
         try {
             Ruang::create([
-                'nama_ruang' => $request->nama_ruang,
+                'nama' => $request->nama_ruang,
                 'jenis' => $request->jenis,
             ]);
 
@@ -79,7 +79,7 @@ class AdminRuangController extends Controller
         $ruang = Ruang::findOrFail($id);
 
         $request->validate([
-            'nama_ruang' => 'required|string|max:255',
+            'nama_ruang' => 'required|string|max:255|unique:ruang,nama,' . $ruang->id,
             'jenis' => 'nullable|string|max:50',
         ]);
 
@@ -87,7 +87,7 @@ class AdminRuangController extends Controller
 
         try {
             $ruang->update([
-                'nama_ruang' => $request->nama_ruang,
+                'nama' => $request->nama_ruang,
                 'jenis' => $request->jenis,
             ]);
 
@@ -122,7 +122,7 @@ class AdminRuangController extends Controller
         $pages = "ruang";
         $cari = $request->get('cari');
 
-        $datas = Ruang::where('nama_ruang', 'like', '%' . $cari . '%')->paginate(config('app.pagination'));
+        $datas = Ruang::where('nama', 'like', '%' . $cari . '%')->paginate(config('app.pagination'));
 
         return view('pages.admin.ruang.index', compact('authSam', 'datas', 'cari', 'title', 'pages'));
     }

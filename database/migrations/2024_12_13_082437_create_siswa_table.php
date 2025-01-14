@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('siswa', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('no_induk', 30)->unique();
+            $table->string('no_induk', 4)->unique();
             $table->string('nisn', 30)->nullable();
-            $table->string('nama_siswa', 50);
+            $table->string('nama', 50);
             $table->enum('jk', ['L', 'P']);
             $table->string('telp', 15)->nullable();
             $table->string('tmp_lahir', 50)->nullable();

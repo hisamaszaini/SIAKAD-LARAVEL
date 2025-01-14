@@ -9,7 +9,7 @@ class JamPelajaran extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['nama_jam', 'jam_mulai', 'jam_selesai', 'urutan'];
+    protected $fillable = ['nama', 'jam_mulai', 'jam_selesai', 'urutan'];
 
     protected $table = "jam_pelajaran";
 

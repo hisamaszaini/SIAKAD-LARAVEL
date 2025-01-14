@@ -24,7 +24,7 @@
                                 <label for="nama_jam">Nama Jam <code>*)</code></label>
                                 <input type="text" name="nama_jam" id="nama_jam"
                                     class="form-control @error('nama_jam') is-invalid @enderror"
-                                    value="{{ old('nama_jam', $jamPelajaran->nama_jam) }}" required>
+                                    value="{{ old('nama_jam', $jamPelajaran->nama) }}" required>
                                 @error('nama_jam')
                                 <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror

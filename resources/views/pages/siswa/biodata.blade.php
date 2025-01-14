@@ -18,7 +18,7 @@
                     <div class="row mb-4">
                         <div class="col-md-4 text-center">
                             <img src="{{ $siswa->foto ? asset('storage/'.$siswa->foto) : 'https://via.placeholder.com/150' }}"
-                                alt="Foto Siswa" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+                                alt="Foto Siswa" class="img-fluid rounded" style="width: 160px; height: 240px;">
                         </div>
                         <div class="col-md-8">
                             <table class="table table-borderless">
@@ -32,7 +32,7 @@
                                 </tr>
                                 <tr>
                                     <th>Nama Siswa</th>
-                                    <td>{{ $siswa->nama_siswa }}</td>
+                                    <td>{{ $siswa->nama }}</td>
                                 </tr>
                                 <tr>
                                     <th>Jenis Kelamin</th>
@@ -40,7 +40,7 @@
                                 </tr>
                                 <tr>
                                     <th>Kelas</th>
-                                    <td>{{ $siswa->kelas->nama_kls ?? '-' }}</td>
+                                    <td>{{ $siswa->kelas->nama ?? '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Telepon</th>

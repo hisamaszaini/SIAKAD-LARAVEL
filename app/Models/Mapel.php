@@ -11,11 +11,12 @@ class Mapel extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'kode_mapel',
-        'nama_mapel',
+        'kode',
+        'nama',
         'kategori_id',
         'kkm',
     ];
+    
     public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'kategori_id');

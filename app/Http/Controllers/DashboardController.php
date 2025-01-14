@@ -24,7 +24,7 @@ class DashboardController extends Controller
         $guru = Guru::get();
         $kelas = Kelas::get();
         $mapel = Mapel::get();
-        $pengumuman = Pengumuman::first();
+        $pengumuman = Pengumuman::orderBy('created_at', 'desc')->first();
         $laki = Siswa::where('jk', 'L')->count();
         $perempuan = Siswa::where('jk', '!=', 'P')->count();
 
@@ -32,8 +32,8 @@ class DashboardController extends Controller
             return view('pages.admin.dashboard', compact('title', 'pages', 'authSam', 'guru', 'kelas', 'mapel', 'pengumuman', 'laki', 'perempuan'));
         } else if (($authSam->role) == 'Guru') {
             $guru_id = Guru::where('user_id', $authSam->id)->pluck('id');
-            $mapel = Mapel::get();
-            return view('pages.guru.dashboard', compact('title', 'pages', 'authSam', 'mapel', 'laki', 'perempuan', 'guru_id', 'pengumuman'));
+            $jadwal = Jadwal::where('guru_id', $guru_id)->get();
+            return view('pages.guru.dashboard', compact('title', 'pages', 'authSam', 'jadwal', 'laki', 'perempuan', 'guru_id', 'pengumuman'));
         } else if (($authSam->role) == 'Siswa') {
             $siswa = Siswa::with('kelas')->where('user_id', $authSam->id)->first();
             if (!$siswa) {

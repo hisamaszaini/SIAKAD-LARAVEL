@@ -1,6 +1,6 @@
 <footer class="main-footer">
                 <div class="footer-left">
-                    Copyright &copy; 2024 <div class="bullet"></div> Sistem Informasi Akademik (SIAKAD), ❤️ Design Stisla.</a>
+                    Copyright &copy; 2025 <div class="bullet"></div> Sistem Informasi Akademik (SIAKAD).</a>
                 </div>
                 <div class="footer-right">
 

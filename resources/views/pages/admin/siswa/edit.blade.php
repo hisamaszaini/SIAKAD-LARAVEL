@@ -29,6 +29,20 @@
                     <form action="{{ route('siswa.update', $siswa->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
+                        <div class="form-group row mb-4">
+                            <div class="col-sm-12 col-md-7">
+                                <div id="image-preview"
+                                    class="image-preview @error('foto') is-invalid @enderror"
+                                    style="background-image: url('{{ $siswa->foto ? asset('storage/' . $siswa->foto) : '' }}'); background-size: cover; background-position: center;">
+                                    <label for="image-upload" id="image-label">Upload Foto</label>
+                                    <input type="file" name="foto" id="image-upload" />
+                                    @error('foto')
+                                    <div class="invalid-feedback"> {{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="row">
                             <div class="form-group col-md-6 col-12">
                                 <label for="no_induk">Nomor Induk Siswa <code>*)</code></label>
@@ -53,7 +67,7 @@
                             <div class="form-group col-md-6 col-12">
                                 <label for="nama">Nama Siswa <code>*)</code></label>
                                 <input type="text" name="nama_siswa" id="nama"
-                                    class="form-control @error('nama_siswa') is-invalid @enderror" value="{{ old('nama_siswa', $siswa->nama_siswa) }}"
+                                    class="form-control @error('nama_siswa') is-invalid @enderror" value="{{ old('nama_siswa', $siswa->nama) }}"
                                     required>
                                 @error('nama_siswa')
                                 <div class="invalid-feedback"> {{ $message }}</div>
@@ -131,7 +145,7 @@
                                     <option value="" disabled selected>Pilih Kelas</option>
                                     @foreach($kelas as $kls)
                                     <option value="{{ $kls->id }}" {{ old('kelas_id', $siswa->kelas_id) == $kls->id ? 'selected' : '' }}>
-                                        {{ $kls->nama_kls }}
+                                        {{ $kls->nama }}
                                     </option>
                                     @endforeach
                                 </select>
@@ -141,19 +155,28 @@
                             </div>
 
                             <div class="form-group col-md-6 col-12">
-                                <label for="telp">No HP</label>
-                                <input type="text" name="telp" id="telp"
-                                    class="form-control @error('telp') is-invalid @enderror" value="{{ old('telp', $siswa->telp) }}">
-                                @error('telp')
+                                <label for="password">Password (kosongkan jika tidak ingin mengganti)</label>
+                                <input type="password" name="password"
+                                    class="form-control @error('password') is-invalid @enderror">
+                                @error('password')
                                 <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="form-group col-md-6 col-12">
-                                <label for="foto">Foto</label>
-                                <input type="file" name="foto" id="foto"
-                                    class="form-control @error('foto') is-invalid @enderror">
-                                @error('foto')
+                                <label for="password2">Konfirmasi Password</label>
+                                <input type="password" name="password_confirmation"
+                                    class="form-control @error('password_confirmation') is-invalid @enderror">
+                                @error('password_confirmation')
+                                <div class="invalid-feedback"> {{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group col-md-6 col-12">
+                                <label for="telp">No HP</label>
+                                <input type="text" name="telp" id="telp"
+                                    class="form-control @error('telp') is-invalid @enderror" value="{{ old('telp', $siswa->telp) }}">
+                                @error('telp')
                                 <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror
                             </div>
@@ -264,6 +287,7 @@
 @endsection
 
 @section('plugins_js')
+@include('layouts.uploadfoto')
 @endsection
 
 @section('page_js')

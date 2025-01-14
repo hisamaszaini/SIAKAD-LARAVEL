@@ -12,7 +12,7 @@ class Guru extends Model
     protected $fillable = [
         'user_id',
         'nip',
-        'nama_guru',
+        'nama',
         'jk',
         'alamat',
         'tmp_lahir',
@@ -20,17 +20,12 @@ class Guru extends Model
         'telp',
         'email',
         'jabatan',
-        'pendidikan_terakhir',
-        'tanggal_masuk',
+        'pendidikan',
+        'tgl_masuk',
         'gelar',
         'foto',
         'status'
     ];
-    
-    public function mapel()
-    {
-        return $this->belongsTo('App\Models\Mapel')->withDefault();
-    }
 
     public function user()
     {

@@ -2413,7 +2413,7 @@ body {
   font-size: 14px;
   font-weight: 400;
   font-family: "Nunito", "Segoe UI", arial;
-  color: #6c757d;
+  background: linear-gradient(135deg, #f5f7ff 0%, #e3e9ff 100%);
 }
 
 a.bb {
@@ -3399,6 +3399,7 @@ body.layout-3 .main-footer {
 .main-sidebar .sidebar-menu li a span {
   margin-top: 3px;
   width: 100%;
+  font-size: 15px;
 }
 .main-sidebar .sidebar-menu li a:hover {
   background-color: #f8fafb;
@@ -3440,7 +3441,7 @@ body.layout-3 .main-footer {
 }
 .main-sidebar .sidebar-menu li ul.dropdown-menu li a {
   color: #868e96;
-  height: 35px;
+  height: 36px;
   padding-left: 65px;
   font-weight: 400;
 }
@@ -3470,7 +3471,7 @@ body.layout-3 .main-footer {
 
 .main-footer {
   padding: 20px 30px 20px 280px;
-  margin-top: 40px;
+  margin-top: 20px;
   color: #98a6ad;
   border-top: 1px solid #e3eaef;
   display: inline-block;

@@ -34,7 +34,7 @@
                             <div class="form-group col-md-6 col-12">
                                 <label for="nama">Nama Guru <code>*)</code></label>
                                 <input type="text" name="nama" id="nama"
-                                    class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama', $guru->nama_guru) }}"
+                                    class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama', $guru->nama) }}"
                                     required>
                                 @error('nama')
                                 <div class="invalid-feedback"> {{ $message }}</div>

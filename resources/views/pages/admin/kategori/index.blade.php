@@ -42,7 +42,7 @@
                             <td class="text-center">
                                 <input type="checkbox" name="ids" class="checkBoxClass" value="{{ $data->id }}">
                             </td>
-                            <td>{{ $data->nama_kategori }}</td>
+                            <td>{{ $data->nama }}</td>
                             <td class="text-center min-row">
                                 <x-button-edit link="{{ route('kategori.edit', $data->id) }}" />
                                 <form action="{{ route('ruang.destroy', $data->id) }}" method="POST" style="display:inline;" class="delete-form">

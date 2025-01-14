@@ -43,8 +43,8 @@
                         <tr id="sid{{ $data->id }}">
                             <td class="text-center">
                                 <input type="checkbox" name="ids" class="checkBoxClass" value="{{ $data->id }}"></td>
-                            <td>{{ $data->nama_mapel }}</td>
-                            <td>{{ $data->kategori->nama_kategori }}</td>
+                            <td>{{ $data->nama }}</td>
+                            <td>{{ $data->kategori->nama }}</td>
                             <td>{{ $data->kkm }}</td>
                             <td class="text-center min-row">
                                 <x-button-edit link="{{ route('mapel.edit', $data->id) }}" />

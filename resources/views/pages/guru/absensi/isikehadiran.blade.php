@@ -30,7 +30,7 @@
                             @foreach($siswas as $key => $siswa)
                             <tr data-siswa-id="{{ $siswa->id }}">
                                 <td>{{ $key + 1 }}</td>
-                                <td>{{ $siswa->nama_siswa }}</td>
+                                <td>{{ $siswa->nama }}</td>
                                 <td>
                                     <div class="btn-group" role="group">
                                         @php

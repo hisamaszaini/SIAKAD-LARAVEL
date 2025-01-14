@@ -22,7 +22,7 @@ class AdminJadwalController extends Controller
 
         if ($cari) {
             $datas = Jadwal::whereHas('mapel', function ($query) use ($cari) {
-                $query->where('nama_mapel', 'like', '%' . $cari . '%');
+                $query->where('nama', 'like', '%' . $cari . '%');
             })->paginate(config('app.pagination'));
         } else {
             $datas = Jadwal::with(['kelas', 'mapel', 'ruang', 'guru', 'jamPelajaran', 'hari'])
@@ -43,10 +43,10 @@ class AdminJadwalController extends Controller
         $authSam = Auth::user();
         $pages = "jadwal";
         $title = "Tambah Jadwal";
-        $kelas = Kelas::orderBy("nama_kls", "asc")->get();
-        $mapel = Mapel::orderBy("nama_mapel", "asc")->get();
-        $ruang = Ruang::orderBy("nama_ruang", "asc")->get();
-        $guru = Guru::orderBy("nama_guru", "asc")->get();
+        $kelas = Kelas::orderBy("nama", "asc")->get();
+        $mapel = Mapel::orderBy("nama", "asc")->get();
+        $ruang = Ruang::orderBy("nama", "asc")->get();
+        $guru = Guru::orderBy("nama", "asc")->get();
         $jamPelajaran = JamPelajaran::orderBy("jam_mulai", "asc")->get();
         $hari = Hari::all();
 
@@ -90,10 +90,10 @@ class AdminJadwalController extends Controller
         $jadwal = Jadwal::findOrFail($id);
         $pages = "jadwal";
         $title = "Edit Jadwal";
-        $kelas = Kelas::orderBy("nama_kls", "asc")->get();
-        $mapel = Mapel::orderBy("nama_mapel", "asc")->get();
-        $ruang = Ruang::orderBy("nama_ruang", "asc")->get();
-        $guru = Guru::orderBy("nama_guru", "asc")->get();
+        $kelas = Kelas::orderBy("nama", "asc")->get();
+        $mapel = Mapel::orderBy("nama", "asc")->get();
+        $ruang = Ruang::orderBy("nama", "asc")->get();
+        $guru = Guru::orderBy("nama", "asc")->get();
         $jamPelajaran = JamPelajaran::orderBy("jam_mulai", "asc")->get();
         $hari = Hari::all();
 
@@ -153,7 +153,7 @@ class AdminJadwalController extends Controller
         $cari = $request->get('cari');
 
         $datas = Jadwal::whereHas('mapel', function ($query) use ($cari) {
-            $query->where('nama_mapel', 'like', '%' . $cari . '%');
+            $query->where('nama', 'like', '%' . $cari . '%');
         })->paginate(config('app.pagination'));
 
         return view('pages.admin.jadwal.index', compact('authSam', 'datas', 'cari', 'title', 'pages'));

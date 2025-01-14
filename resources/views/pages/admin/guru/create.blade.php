@@ -144,7 +144,7 @@
                             <div class="form-group col-md-6 col-12">
                                 <label for="tgl_masuk">Tanggal Masuk</label>
                                 <input type="date" name="tgl_masuk" id="tgl_masuk"
-                                    class="form-control @error('tgl_masuk') is-invalid @enderror" value="{{ old('tgl_masuk') }}">
+                                    class="form-control @error('tgl_masuk') is-invalid @enderror" value="{{ old('tgl_masuk', date('Y-m-d') }}">
                                 @error('tgl_masuk')
                                 <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror

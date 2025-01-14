@@ -15,10 +15,10 @@ class AdminKategoriController extends Controller
         $cari = $request->get('cari');
 
         if ($cari) {
-            $datas = Kategori::where('nama_kategori', 'like', '%' . $cari . '%')
+            $datas = Kategori::where('nama', 'like', '%' . $cari . '%')
                 ->paginate(config('app.pagination'));
         } else {
-            $datas = Kategori::orderBy('nama_kategori', 'asc')->paginate(config('app.pagination'));
+            $datas = Kategori::orderBy('nama', 'asc')->paginate(config('app.pagination'));
         }
 
         $pages = "kategori";
@@ -38,23 +38,20 @@ class AdminKategoriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_kategori' => 'required|string|max:30|unique:kategori,nama_kategori',
+            'nama' => 'required|string|max:30|unique:kategori,nama',
         ]);
 
-        DB::beginTransaction();
-
+        DB::beginTransaction();        
         try {
             Kategori::create([
-                'nama_kategori' => $request->nama_kategori,
+                'nama' => $request->nama,
             ]);
 
             DB::commit();
-            session()->flash('success', 'Data kategori berhasil ditambahkan.');
-            return redirect()->route('kategori.index');
+            return redirect()->route('kategori.index')->with("success", "Kategori berhasil ditambahkan!");
         } catch (\Exception $e) {
             DB::rollback();
-            session()->flash('error', 'Gagal menambahkan data kategori: ' . $e->getMessage());
-            return redirect()->back()->withInput();
+            return redirect()->back()->with("error", "Gagal menambahkan data kategori!");
         }
     }
 
@@ -73,21 +70,21 @@ class AdminKategoriController extends Controller
         $kategori = Kategori::findOrFail($id);
 
         $request->validate([
-            'nama_kategori' => 'required|string|max:30|unique:kategori,nama_kategori,' . $kategori->id,
+            'nama' => 'required|string|max:30|unique:kategori,nama,' . $kategori->id,
         ]);
 
         DB::beginTransaction();
 
         try {
             $kategori->update([
-                'nama_kategori' => $request->nama_kategori,
+                'nama' => $request->nama,
             ]);
 
             DB::commit();
             return redirect()->route('kategori.edit', $id)->with('success', 'Kategori berhasil diperbarui.');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Gagal memperbarui data kategori: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal memperbarui data kategori!');
         }
     }
 
@@ -114,7 +111,7 @@ class AdminKategoriController extends Controller
         $pages = "kategori";
         $cari = $request->get('cari');
 
-        $datas = Kategori::where('nama_kategori', 'like', '%' . $cari . '%')->paginate(config('app.pagination'));
+        $datas = Kategori::where('nama', 'like', '%' . $cari . '%')->paginate(config('app.pagination'));
 
         return view('pages.admin.kategori.index', compact('authSam', 'datas', 'cari', 'title', 'pages'));
     }

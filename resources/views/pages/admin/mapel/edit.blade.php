@@ -24,7 +24,7 @@
                                 <label for="kode_mapel">Kode Mata Pelajaran <code>*)</code></label>
                                 <input type="text" name="kode_mapel" id="kode_mapel"
                                     class="form-control @error('kode_mapel') is-invalid @enderror"
-                                    value="{{ old('kode_mapel', $mapel->kode_mapel) }}" required>
+                                    value="{{ old('kode_mapel', $mapel->kode) }}" required>
                                 @error('kode_mapel')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -34,7 +34,7 @@
                                 <label for="nama_mapel">Nama Mata Pelajaran <code>*)</code></label>
                                 <input type="text" name="nama_mapel" id="nama_mapel"
                                     class="form-control @error('nama_mapel') is-invalid @enderror"
-                                    value="{{ old('nama_mapel', $mapel->nama_mapel) }}" required>
+                                    value="{{ old('nama_mapel', $mapel->nama) }}" required>
                                 @error('nama_mapel')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -46,7 +46,7 @@
                                     <option value="">Pilih Kategori</option>
                                     @foreach ($kategori as $item)
                                     <option value="{{ $item->id }}" {{ old('kategori_id', $mapel->kategori_id) == $item->id ? 'selected' : '' }}>
-                                        {{ $item->nama_kategori }} <!-- Pastikan ini sesuai dengan kolom yang ada di tabel kategori -->
+                                        {{ $item->nama }}
                                     </option>
                                     @endforeach
                                 </select>

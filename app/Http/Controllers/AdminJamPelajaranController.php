@@ -14,7 +14,7 @@ class AdminJamPelajaranController extends Controller
         $cari = $request->get('cari');
 
         if ($cari) {
-            $datas = JamPelajaran::where('nama_jam', 'like', '%' . $cari . '%')
+            $datas = JamPelajaran::where('nama', 'like', '%' . $cari . '%')
                 ->orderBy('urutan')
                 ->paginate(config('app.pagination'));
         } else {
@@ -48,7 +48,7 @@ class AdminJamPelajaranController extends Controller
 
         try {
             JamPelajaran::create([
-                'nama_jam' => $request->nama_jam,
+                'nama' => $request->nama_jam,
                 'jam_mulai' => $request->jam_mulai,
                 'jam_selesai' => $request->jam_selesai,
                 'urutan' => $request->urutan,
@@ -89,7 +89,7 @@ class AdminJamPelajaranController extends Controller
 
         try {
             $jamPelajaran->update([
-                'nama_jam' => $request->nama_jam,
+                'nama' => $request->nama_jam,
                 'jam_mulai' => $request->jam_mulai,
                 'jam_selesai' => $request->jam_selesai,
                 'urutan' => $request->urutan,
@@ -126,7 +126,7 @@ class AdminJamPelajaranController extends Controller
         $pages = "jampelajaran";
         $cari = $request->get('cari');
 
-        $datas = JamPelajaran::where('nama_jam', 'like', '%' . $cari . '%')->orderBy('urutan')->paginate(config('app.pagination'));
+        $datas = JamPelajaran::where('nama', 'like', '%' . $cari . '%')->orderBy('urutan')->paginate(config('app.pagination'));
 
         return view('pages.admin.jampelajaran.index', compact('authSam', 'datas', 'cari', 'title', 'pages'));
     }

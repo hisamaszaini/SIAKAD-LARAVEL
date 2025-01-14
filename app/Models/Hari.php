@@ -12,7 +12,7 @@ class Hari extends Model
     protected $table = 'hari';
 
     protected $fillable = [
-        'nama_hari'
+        'nama'
     ];
 
     public function jadwal()

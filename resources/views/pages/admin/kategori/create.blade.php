@@ -20,19 +20,16 @@
                     <form action="{{ route('kategori.store') }}" method="POST">
                         @csrf
                         <div class="row">
-                            <!-- Input Nama Kategori -->
                             <div class="form-group col-md-12 col-12">
-                                <label for="nama_kategori">Nama Kategori <code>*)</code></label>
-                                <input type="text" name="nama_kategori" id="nama_kategori"
-                                    class="form-control @error('nama_kategori') is-invalid @enderror"
-                                    value="{{ old('nama_kategori') }}" required>
-                                @error('nama_kategori')
+                                <label for="nama">Nama Kategori <code>*)</code></label>
+                                <input type="text" name="nama" id="nama"
+                                    class="form-control @error('nama') is-invalid @enderror"
+                                    value="{{ old('nama') }}" required>
+                                @error('nama')
                                 <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
-
-                        <!-- Tombol Submit -->
                         <div class="card-footer text-right">
                             <button type="submit" class="btn btn-primary">Submit</button>
                             <x-button-back link="{{ route('kategori.index') }}" />
@@ -49,5 +46,5 @@
 @endsection
 
 @section('page_js')
-@include('layouts.sweetalert')
+@include('layouts.sweetalert2')
 @endsection

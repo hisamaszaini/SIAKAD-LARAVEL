@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB; // Import DB facade
@@ -17,6 +19,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'id' => 1,
             'name' => 'Muhammad Hisam Aszaini',
+            'username' => 'admin',
             'email' => 'muhammadhisamaszaini@gmail.com',
             'role' => 'Admin',
             'email_verified_at' => null,

@@ -46,7 +46,7 @@
                                 <input type="checkbox" name="ids" class="checkBoxClass" value="{{ $data->id }}">
                             </td>
                             <td>{{ $data->no_induk }}</td>
-                            <td>{{ Str::limit($data->nama_siswa, 25, ' ...') }}</td>
+                            <td>{{ Str::limit($data->nama, 25, ' ...') }}</td>
                             <td>{{ $data->user != null ? $data->user->email : 'Data tidak ditemukan' }}</td>
                             <td class="text-center min-row">
                                 <x-button-edit link="/admin/{{ $pages }}/{{$data->id}}" />

@@ -43,9 +43,9 @@
                         <tr id="sid{{ $data->id }}">
                             <td class="text-center">
                                 <input type="checkbox" name="ids" class="checkBoxClass" value="{{ $data->id }}"></td>
-                            <td>{{ $data->nama_kls }}</td>
+                            <td>{{ $data->nama }}</td>
                             <td>{{ $data->tingkat }}</td>
-                            <td>{{ $data->guru ? $data->guru->nama_guru : 'Data tidak ditemukan' }}</td>
+                            <td>{{ $data->guru ? $data->guru->nama : 'Data tidak ditemukan' }}</td>
                             <td class="text-center min-row">
                                 <x-button-edit link="/admin/{{ $pages }}/{{$data->id}}" />
                                 <x-button-delete link="/admin/{{ $pages }}/{{$data->id}}" />

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('kelas', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_kls', 10);
+            $table->string('nama', 10);
             $table->string('tingkat', 2);
             $table->foreignId('guru_id')->nullable()->constrained('guru')->onDelete('set null'); 
             $table->timestamps();

@@ -18,11 +18,11 @@ class AdminKelasController extends Controller
         $cari = $request->get('cari');
 
         if ($cari) {
-            $datas = Kelas::where('nama_kls', 'like', '%' . $cari . '%')
+            $datas = Kelas::where('nama', 'like', '%' . $cari . '%')
                 ->orWhereHas('guru', function ($query) use ($cari) {
-                    $query->where('nama_guru', 'like', '%' . $cari . '%');
+                    $query->where('nama', 'like', '%' . $cari . '%');
                 })
-                ->with('guru')->orderBy("nama_kls", "asc")
+                ->with('guru')->orderBy("nama", "asc")
                 ->paginate(config('app.pagination'));
         } else {
             $datas = Kelas::with('guru')->paginate(config('app.pagination'));
@@ -55,7 +55,7 @@ class AdminKelasController extends Controller
 
         try {
             Kelas::create([
-                'nama_kls' => $request->nama_kelas,
+                'nama' => $request->nama_kelas,
                 'tingkat' => $request->tingkat,
                 'guru_id' => $request->guru_id,
             ]);
@@ -99,7 +99,7 @@ class AdminKelasController extends Controller
 
         try {
             $kelas->update([
-                'nama_kls' => $request->nama_kelas,
+                'nama' => $request->nama_kelas,
                 'tingkat' => $request->tingkat,
                 'guru_id' => $request->guru_id,
             ]);
@@ -138,9 +138,9 @@ class AdminKelasController extends Controller
         $pages = "kelas";
         $cari = $request->get('cari');
 
-        $datas = Kelas::where('nama_kls', 'like', '%' . $cari . '%')
+        $datas = Kelas::where('nama', 'like', '%' . $cari . '%')
             ->orWhereHas('guru', function ($query) use ($cari) {
-                $query->where('nama_guru', 'like', '%' . $cari . '%');
+                $query->where('nama', 'like', '%' . $cari . '%');
             })
             ->with('guru')
             ->paginate(config('app.pagination'));

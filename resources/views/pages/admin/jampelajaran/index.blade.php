@@ -43,7 +43,7 @@
                         @forelse ($datas as $key => $jam)
                         <tr id="sid{{ $jam->id }}">
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $jam->nama_jam }}</td>
+                            <td>{{ $jam->nama }}</td>
                             <td>{{ date("h:i", strtotime($jam->jam_mulai)) }}</td>
                             <td>{{ date("h:i", strtotime($jam->jam_selesai)) }}</td>
                             <td class="text-center">

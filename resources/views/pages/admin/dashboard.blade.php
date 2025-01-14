@@ -78,14 +78,14 @@
 
     <div class="card">
         <div class="card-header">
-            <h4>Pengumuman</h4>
+            <h4><i class="fa fa-info-circle"></i> Pengumuman</h4>
         </div>
         <div class="card-body">
             <div class="row">
                 @if($pengumuman)
-                <p class="ml-3">{{ $pengumuman->isi }}</p>
+                <div class="ml-3">{!! htmlspecialchars_decode($pengumuman->isi) !!}</div>
                 @else
-                <p class="ml-3">Tidak ada pengumuman.</p>
+                <div class="ml-3">Tidak ada pengumuman.</div>
                 @endif
             </div>
         </div>
@@ -96,7 +96,7 @@
         <div class="col-lg-8 col-md-12 col-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Jumlah Siswa: {{ $laki + $perempuan }}</h4>
+                    <h4><i class="fa fa-user-graduate"></i>  Jumlah Siswa: {{ $laki + $perempuan }}</h4>
                 </div>
                 <div class="card-body">
                     <canvas id="myChart"></canvas>

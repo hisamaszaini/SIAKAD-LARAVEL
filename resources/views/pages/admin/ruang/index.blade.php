@@ -42,7 +42,7 @@
                         <tr id="sid{{ $data->id }}">
                             <td class="text-center">
                                 <input type="checkbox" name="ids" class="checkBoxClass" value="{{ $data->id }}"></td>
-                            <td>{{ $data->nama_ruang }}</td>
+                            <td>{{ $data->nama }}</td>
                             <td>{{ $data->jenis }}</td>
                             <td class="text-center min-row">
                                 <x-button-edit link="/admin/{{ $pages }}/{{$data->id}}" />

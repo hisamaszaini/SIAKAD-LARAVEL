@@ -29,6 +29,21 @@
                     <form action="{{ route('siswa.updatebio', $siswa->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
+                        <div class="form-group row mb-4">
+                            <div class="col-sm-12 col-md-7">
+                                <div id="image-preview"
+                                    class="image-preview @error('foto') is-invalid @enderror"
+                                    style="background-image: url('{{ $siswa->foto ? asset('storage/' . $siswa->foto) : '' }}'); background-size: cover; background-position: center;">
+                                    <label for="image-upload" id="image-label">Upload Foto</label>
+                                    <input type="file" name="foto" id="image-upload" />
+                                    @error('foto')
+                                    <div class="invalid-feedback"> {{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+
                         <div class="row">
                             <div class="form-group col-md-6 col-12">
                                 <label for="no_induk">Nomor Induk Siswa <code>*)</code></label>
@@ -53,7 +68,7 @@
                             <div class="form-group col-md-6 col-12">
                                 <label for="nama">Nama Siswa <code>*)</code></label>
                                 <input type="text" name="nama_siswa" id="nama"
-                                    class="form-control @error('nama_siswa') is-invalid @enderror" value="{{ old('nama_siswa', $siswa->nama_siswa) }}"
+                                    class="form-control @error('nama_siswa') is-invalid @enderror" value="{{ old('nama_siswa', $siswa->nama) }}"
                                     required>
                                 @error('nama_siswa')
                                 <div class="invalid-feedback"> {{ $message }}</div>
@@ -82,7 +97,7 @@
                             <div class="form-group col-md-6 col-12">
                                 <label for="email">Email <code>*)</code></label>
                                 <input type="email" name="email" id="email"
-                                    class="form-control @error('email') is-invalid @enderror" 
+                                    class="form-control @error('email') is-invalid @enderror"
                                     value="{{ old('email', $authSam->email) }}" required>
                                 @error('email')
                                 <div class="invalid-feedback"> {{ $message }}</div>
@@ -121,15 +136,6 @@
                                 <input type="text" name="alamat" id="alamat"
                                     class="form-control @error('alamat') is-invalid @enderror" value="{{ old('alamat', $siswa->alamat) }}">
                                 @error('alamat')
-                                <div class="invalid-feedback"> {{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group col-md-6 col-12">
-                                <label for="foto">Foto</label>
-                                <input type="file" name="foto" id="foto"
-                                    class="form-control @error('foto') is-invalid @enderror">
-                                @error('foto')
                                 <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror
                             </div>
@@ -191,6 +197,7 @@
 @endsection
 
 @section('plugins_js')
+@include('layouts.uploadfoto')
 @endsection
 
 @section('page_js')

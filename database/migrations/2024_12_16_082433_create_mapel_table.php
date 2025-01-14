@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('mapel', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_mapel', 12)->unique();
-            $table->string('nama_mapel', 50);
+            $table->string('kode', 12)->unique();
+            $table->string('nama', 50);
             $table->foreignId('kategori_id')->constrained('kategori')->onDelete('cascade');
             $table->integer('kkm');
             $table->timestamps();

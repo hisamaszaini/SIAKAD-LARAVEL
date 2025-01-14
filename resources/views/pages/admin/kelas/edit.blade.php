@@ -25,7 +25,7 @@
                                 <label for="nama_kelas">Nama Kelas <code>*)</code></label>
                                 <input type="text" name="nama_kelas" id="nama_kelas"
                                     class="form-control @error('nama_kelas') is-invalid @enderror"
-                                    value="{{ old('nama_kelas', $kelas->nama_kls) }}" required>
+                                    value="{{ old('nama_kelas', $kelas->nama) }}" required>
                                 @error('nama_kelas')
                                 <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror
@@ -50,7 +50,7 @@
                                     <option value="">Pilih Guru</option>
                                     @foreach($gurus as $guru)
                                         <option value="{{ $guru->id }}" {{ old('guru_id', $kelas->guru_id) == $guru->id ? 'selected' : '' }}>
-                                            {{ $guru->nama_guru }}
+                                            {{ $guru->nama }}
                                         </option>
                                     @endforeach
                                 </select>

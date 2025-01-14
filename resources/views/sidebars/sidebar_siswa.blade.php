@@ -9,9 +9,27 @@
         <a href="{{ route('siswa.jadwal') }}" class="nav-link"><i class="fas fa-calendar"></i><span>Jadwal</span></a>
     </li>
     <li class="{{$pages=='kehadiran' ? 'active' : ''}}">
-        <a href="{{ route('siswa.jadwal') }}" class="nav-link"><i class="fas fa-user-check"></i><span>Kehadiran</span></a>
+        <a href="{{ route('siswa.kehadiran') }}" class="nav-link"><i class="fas fa-user-check"></i><span>Kehadiran</span></a>
+    </li>
+    <li class="{{$pages=='rapot' ? 'active' : ''}}">
+        <a href="{{ route('siswa.rapot') }}" class="nav-link"><i class="fas fa-chart-bar"></i><span>Rapot</span></a>
     </li>
     <li class="{{$pages=='tagihan' ? 'active' : ''}}">
-        <a href="{{ route('siswa.jadwal') }}" class="nav-link"><i class="fas fa-wallet"></i><span>Tagihan</span></a>
+        <a href="{{ route('siswa.tagihan') }}" class="nav-link"><i class="fas fa-wallet"></i><span>Tagihan</span></a>
+    </li>
+    <li class="menu-header">Akun</li>
+    <li class="{{$pages=='profile' ? 'active' : ''}}">
+        <a class="nav-link" href="{{ route('profile') }}">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </a>
+    </li>
+    <li class="{{$pages=='logout' ? 'active' : ''}}">
+        <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+            @csrf
+        </form>
+        <a href="#" class="dropdown-item has-icon text-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+        </a>
     </li>
 </ul>

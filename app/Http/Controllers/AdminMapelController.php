@@ -17,7 +17,7 @@ class AdminMapelController extends Controller
         $title = "Daftar Mapel";
         $pages = "mapel";
         $cari = $request->get('cari', '');
-        $datas = Mapel::where('nama_mapel', 'like', '%' . $cari . '%')->paginate(config('app.pagination'));
+        $datas = Mapel::where('nama', 'like', '%' . $cari . '%')->paginate(config('app.pagination'));
         return view('pages.admin.mapel.index', compact('authSam', 'datas', 'cari', 'title', 'pages'));
     }
 
@@ -33,7 +33,7 @@ class AdminMapelController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'kode_mapel' => 'required|string|max:12|unique:mapel,kode_mapel',
+            'kode_mapel' => 'required|string|max:12|unique:mapel,kode',
             'nama_mapel' => 'required|string|max:50',
             'kategori_id' => 'required|exists:kategori,id',
             'kkm' => 'required|integer|min:0|max:100',
@@ -44,8 +44,8 @@ class AdminMapelController extends Controller
         }
     
         Mapel::create([
-            'kode_mapel' => $request->kode_mapel,
-            'nama_mapel' => $request->nama_mapel,
+            'kode' => $request->kode_mapel,
+            'nama' => $request->nama_mapel,
             'kategori_id' => $request->kategori_id,
             'kkm' => $request->kkm,
         ]);
@@ -65,7 +65,7 @@ class AdminMapelController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'kode_mapel' => 'required|string|max:12|unique:mapel,kode_mapel,' . $id,
+            'kode_mapel' => 'required|string|max:12|unique:mapel,kode,' . $id,
             'nama_mapel' => 'required|string|max:50',
             'kategori_id' => 'required|exists:kategori,id',
             'kkm' => 'required|integer|min:0',
@@ -77,8 +77,8 @@ class AdminMapelController extends Controller
     
         $mapel = Mapel::findOrFail($id);
         $mapel->update([
-            'kode_mapel' => $request->kode_mapel,
-            'nama_mapel' => $request->nama_mapel,
+            'kode' => $request->kode_mapel,
+            'nama' => $request->nama_mapel,
             'kategori_id' => $request->kategori_id,
             'kkm' => $request->kkm,
         ]);

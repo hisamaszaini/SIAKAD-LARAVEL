@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
@@ -42,5 +45,17 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
+        
+        Fortify::authenticateUsing(function (Request $request) {
+
+        $user = User::where('email', $request->login)
+                ->orWhere('username', $request->login)
+                ->first();
+
+        if ($user &&
+            Hash::check($request->password, $user->password)) {
+            return $user;
+        }
+    });
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pengumuman', function (Blueprint $table) {
             $table->id();
-            $table->string('opsi', 32);
+            $table->string('judul', 50);
             $table->text('isi');
             $table->timestamps();
         });

@@ -11,6 +11,13 @@ class Kehadiran extends Model
     const STATUS_TIDAK_HADIR = 2;
     const STATUS_SAKIT = 3;
     const STATUS_IZIN = 4;
+    
+    const STATUS_LABELS = [
+        self::STATUS_HADIR => 'Hadir',
+        self::STATUS_TIDAK_HADIR => 'Tidak Hadir',
+        self::STATUS_SAKIT => 'Sakit',
+        self::STATUS_IZIN => 'Izin',
+    ];
 
     public $timestamps = false; 
 
@@ -20,20 +27,9 @@ class Kehadiran extends Model
         'status',
     ];
 
-    public function getStatusLabel($status)
+    public function getStatusLabelAttribute()
     {
-        switch ($status) {
-            case self::STATUS_HADIR:
-                return 'Hadir';
-            case self::STATUS_TIDAK_HADIR:
-                return 'Tidak Hadir';
-            case self::STATUS_SAKIT:
-                return 'Sakit';
-            case self::STATUS_IZIN:
-                return 'Izin';
-            default:
-                return 'Unknown';
-        }
+        return self::STATUS_LABELS[$this->status] ?? 'Unknown';
     }
 
     public function siswa()
@@ -44,6 +40,11 @@ class Kehadiran extends Model
     public function absensi()
     {
         return $this->belongsTo(Absensi::class);
+    }
+
+    public function jadwal()
+    {
+        return $this->belongsTo(Jadwal::class);
     }
 
     protected $table = 'kehadiran';

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
+
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminGuruController;
@@ -10,15 +12,32 @@ use App\Http\Controllers\AdminMapelController;
 use App\Http\Controllers\AdminJamPelajaranController;
 use App\Http\Controllers\AdminJadwalController;
 use App\Http\Controllers\AdminKategoriController;
+use App\Http\Controllers\AdminPengumumanController;
+use App\Http\Controllers\AdminAbsensiController;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\AdminTagihanController;
+use App\Http\Controllers\AdminBlogController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\GuruController;
+use App\Http\Controllers\GuruNilaiController;
+use App\Http\Controllers\GuruRapotController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Middleware\CheckRole;
+
+Route::get('/clear-cache', function () {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+    return 'DONE';
+  });
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // Route::middleware([
 //     'auth:sanctum',
@@ -30,24 +49,23 @@ Route::get('/', function () {
 //     })->name('dashboard');
 // });
 
-Route::group(['middleware' => ['auth:web', 'verified']], function () {
+//Blog
+Route::get('/', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/lists', [BlogController::class, 'posts'])->name('blog.list');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.post');
+Route::get('/blog/kategori/{slug}', [BlogController::class, 'kategoris'])->name('blog.kategori');
 
+Route::group(['middleware' => ['auth:web', 'verified']], function () {
     //DASHBOARD-MENU
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [UsersController::class, 'profile'])->name('profile');
     Route::put('/profile/updatePassword', [UsersController::class, 'updatePassword'])->name('updatePassword');
     Route::put('/profile/updateEmail', [UsersController::class, 'updateEmail'])->name('updateEmail');
+});
 
-    //MASTERING
-    // Route::get('/admin/users', [UsersController::class, 'index'])->name('users');
-    // Route::get('/admin/users/{id}', [UsersController::class, 'edit'])->name('users.edit');
-    // Route::put('/admin/users/{id}', [UsersController::class, 'update'])->name('users.update');
-    // Route::delete('/admin/users/{id}', [UsersController::class, 'destroy'])->name('users.destroy');
-    // Route::get('/admin/datausers/cari', [UsersController::class, 'cari'])->name('users.cari');
-    // Route::get('/admin/datausers/create', [UsersController::class, 'create'])->name('users.create');
-    // Route::post('/admin/datausers', [UsersController::class, 'store'])->name('users.store');
-    // Route::delete('/admin/datausers/multidel', [UsersController::class, 'multidel'])->name('users.multidel');
-
+//Admin
+Route::group(['middleware' => ['auth:web', 'verified', 'is_role:Admin']], function () {
     //Guru
     Route::get('/admin/guru', [AdminGuruController::class, 'index'])->name('guru.index');
     Route::get('/admin/guru/{id}', [AdminGuruController::class, 'edit'])->name('guru.edit');
@@ -128,7 +146,55 @@ Route::group(['middleware' => ['auth:web', 'verified']], function () {
     Route::post('/admin/datajadwal', [AdminJadwalController::class, 'store'])->name('jadwal.store');
     Route::delete('/admin/datajadwal/multidel', [AdminJadwalController::class, 'multidel'])->name('jadwal.multidel');
 
-    //Membuat Absensi (Guru)
+    //Pengumuman
+    Route::get('/admin/pengumuman', [AdminPengumumanController::class, 'index'])->name('pengumuman.index');
+    Route::get('/admin/pengumuman/{id}', [AdminPengumumanController::class, 'edit'])->name('pengumuman.edit');
+    Route::put('/admin/pengumuman/{id}', [AdminPengumumanController::class, 'update'])->name('pengumuman.update');
+    Route::delete('/admin/pengumuman/{id}', [AdminPengumumanController::class, 'destroy'])->name('pengumuman.destroy');
+    Route::get('/admin/datapengumuman/cari', [AdminPengumumanController::class, 'cari'])->name('pengumuman.cari');
+    Route::get('/admin/datapengumuman/create', [AdminPengumumanController::class, 'create'])->name('pengumuman.create');
+    Route::post('/admin/datapengumuman', [AdminPengumumanController::class, 'store'])->name('pengumuman.store');
+    Route::delete('/admin/datapengumuman/multidel', [AdminPengumumanController::class, 'multidel'])->name('pengumuman.multidel');
+
+    //Absensi
+    Route::get('/admin/absensi', [AdminAbsensiController::class, 'index'])->name('absensi.index');
+    Route::get('/admin/absensi/{id}', [AdminAbsensiController::class, 'view'])->name('absensi.view');
+
+    //Tagihan
+    Route::get('/admin/tagihan', [AdminTagihanController::class, 'index'])->name('tagihan.index');
+    Route::get('/admin/tagihan/{id}', [AdminTagihanController::class, 'edit'])->name('tagihan.edit');
+    Route::put('/admin/tagihan/{id}', [AdminTagihanController::class, 'update'])->name('tagihan.update');
+    Route::delete('/admin/tagihan/{id}', [AdminTagihanController::class, 'destroy'])->name('tagihan.destroy');
+    Route::get('/admin/datatagihan', [AdminTagihanController::class, 'create'])->name('tagihan.create');
+    Route::post('/admin/datatagihan', [AdminTagihanController::class, 'store'])->name('tagihan.store');
+    Route::post('/admin/penagihan/{tagihanId}', [AdminTagihanController::class, 'createPenagihan'])->name('penagihan.create');
+
+    //Penagihan
+    Route::get('/admin/daftarpenagihan/{tagihanId}', [AdminTagihanController::class, 'daftarPenagihan'])->name('penagihan.daftar');
+    Route::post('/admin/penagihan/{id}/update-status', [AdminTagihanController::class, 'updateStatus'])->name('penagihan.updateStatus');
+
+    //Blog Post
+    Route::get('/admin/blog/posts', [AdminBlogController::class, 'blogListPost'])->name('blog.listpost');
+    Route::get('/admin/blog/post/create', [AdminBlogController::class, 'blogCreatePost'])->name('blog.createpost');
+    Route::post('/admin/blog/datapost', [AdminBlogController::class, 'blogStorePost'])->name('blog.storepost');
+    Route::get('/admin/blog/datapost/{idPost}/edit', [AdminBlogController::class, 'editBlogPost'])->name('blog.editpost');
+    Route::put('/admin/blog/datapost/{idPost}', [AdminBlogController::class, 'updateBlogPost'])->name('blog.updatepost');
+    Route::delete('/admin/blog/datapost/{idPost}', [AdminBlogController::class, 'destroyBlogPost'])->name('blog.destroypost');
+    Route::delete('/admin/blog/datapost/multidel', [AdminBlogController::class, 'multidelBlogPost'])->name('blog.multidelpost');
+    Route::post('/admin/blog/upload-image', [AdminBlogController::class, 'uploadSummernoteImage'])->name('upload.summernote.image');
+    
+    //Blog Kategori
+    Route::get('/admin/blog/kategori', [AdminBlogController::class, 'blogListKategori'])->name('blog.listkategori');
+    Route::get('/admin/blog/kategori/create', [AdminBlogController::class, 'blogCreateKategori'])->name('blog.createkategori');
+    Route::post('/admin/blog/datakategori', [AdminBlogController::class, 'blogStoreKategori'])->name('blog.storekategori');
+    Route::get('/admin/blog/datakategori/{idKategori}/edit', [AdminBlogController::class, 'editBlogKategori'])->name('blog.editkategori');
+    Route::put('/admin/blog/datakategori/{idKategori}', [AdminBlogController::class, 'blogUpdateKategori'])->name('blog.updatekategori');
+    Route::delete('/admin/blog/datakategori/{idKategori}', [AdminBlogController::class, 'destroyBlogKategori'])->name('blog.destroykategori');
+    Route::delete('/admin/blog/datakategori/multidel', [AdminBlogController::class, 'multidelBlogKategori'])->name('blog.multidelkategori');
+});
+
+//Guru
+Route::group(['middleware' => ['auth:web', 'verified', 'is_role:Guru']], function () {
     Route::prefix('guru')->group(function () {
         Route::get('/absensi', [AbsensiController::class, 'index'])->name('guru.absensi.index');
         Route::get('/absensi/create', [AbsensiController::class, 'create'])->name('guru.absensi.create');
@@ -139,13 +205,30 @@ Route::group(['middleware' => ['auth:web', 'verified']], function () {
         Route::delete('/absensi/{id}', [AbsensiController::class, 'destroy'])->name('guru.absensi.destroy');
         Route::get('/absensi/{id}/kehadiran/isi', [AbsensiController::class, 'createKehadiran'])->name('guru.absensi.isikehadiran');
         Route::post('/kehadiran', [AbsensiController::class, 'storeKehadiran'])->name('guru.kehadiran.store');
-    });
-
-    //Siswa
-    Route::prefix('siswa')->group(function () {
-        Route::get('/biodata', [SiswaController::class, 'biodata'])->name('siswa.biodata');
-        Route::get('/jadwal', [SiswaController::class, 'lihatJadwal'])->name('siswa.jadwal');
-        Route::get('/editbiodata', [SiswaController::class, 'editBiodata'])->name('siswa.editbio');
-        Route::put('/updatebio', [SiswaController::class, 'updateBiodata'])->name('siswa.updatebio');
+        Route::get('/nilai', [GuruNilaiController::class, 'index'])->name('guru.nilai.index');
+        Route::get('/nilai/{id_jadwal}', [GuruNilaiController::class, 'createDeskripsi'])->name('guru.nilai.create');
+        Route::post('/nilai', [GuruNilaiController::class, 'storeDeskripsi'])->name('guru.nilai.storeDeskripsi');
+        Route::get('/isi-nilai/{id_jadwal}', [GuruRapotController::class, 'createNilai'])->name('guru.nilairapot.create');
+        Route::post('/isi-nilai/{id_jadwal}', [GuruRapotController::class, 'storeNilai'])->name('guru.nilairapot.store');
+        Route::get('/biodata', [GuruController::class, 'biodata'])->name('guru.biodata');
+        Route::get('/editbiodata', [GuruController::class, 'editBiodata'])->name('guru.editbio');
+        Route::put('/updatebio', [GuruController::class, 'updateBiodata'])->name('guru.updatebio');
+        Route::get('/jadwal', [GuruController::class, 'lihatJadwal'])->name('guru.jadwal');
     });
 });
+
+
+//Siswa
+Route::group(['middleware' => ['auth:web', 'verified', 'is_role:Siswa']], function () {
+    Route::prefix('siswa')->group(function () {
+        Route::get('/biodata', [SiswaController::class, 'biodata'])->name('siswa.biodata');
+        Route::get('/editbiodata', [SiswaController::class, 'editBiodata'])->name('siswa.editbio');
+        Route::put('/updatebio', [SiswaController::class, 'updateBiodata'])->name('siswa.updatebio');
+        Route::get('/jadwal', [SiswaController::class, 'lihatJadwal'])->name('siswa.jadwal');
+        Route::get('/kehadiran', [SiswaController::class, 'lihatKehadiran'])->name('siswa.kehadiran');
+        Route::get('/rapot', [SiswaController::class, 'lihatRapot'])->name('siswa.rapot');
+        Route::get('/tagihan', [SiswaController::class, 'lihatTagihan'])->name('siswa.tagihan');
+    });
+});
+
+Route::get('/siswa/kwitansi/{penagihanId}', [AdminTagihanController::class, 'kwitansiPenagihan'])->name('siswa.kwitansi');

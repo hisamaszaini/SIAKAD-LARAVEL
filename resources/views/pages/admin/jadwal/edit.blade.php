@@ -24,7 +24,7 @@
                                 <select name="kelas_id" id="kelas_id" class="form-control @error('kelas_id') is-invalid @enderror" required>
                                     <option value="">Pilih Kelas</option>
                                     @foreach($kelas as $kls)
-                                    <option value="{{ $kls->id }}" {{ $jadwal->kelas_id == $kls->id ? 'selected' : '' }}>{{ $kls->nama_kls }}</option>
+                                    <option value="{{ $kls->id }}" {{ $jadwal->kelas_id == $kls->id ? 'selected' : '' }}>{{ $kls->nama }}</option>
                                     @endforeach
                                 </select>
                                 @error('kelas_id')
@@ -37,7 +37,7 @@
                                 <select name="mapel_id" id="mapel_id" class="form-control @error('mapel_id') is-invalid @enderror" required>
                                     <option value="">Pilih Mata Pelajaran</option>
                                     @foreach($mapel as $mpl)
-                                    <option value="{{ $mpl->id }}" {{ $jadwal->mapel_id == $mpl->id ? 'selected' : '' }}>{{ $mpl->nama_mapel }}</option>
+                                    <option value="{{ $mpl->id }}" {{ $jadwal->mapel_id == $mpl->id ? 'selected' : '' }}>{{ $mpl->nama }}</option>
                                     @endforeach
                                 </select>
                                 @error('mapel_id')
@@ -52,7 +52,7 @@
                                 <select name="ruang_id" id="ruang_id" class="form-control @error('ruang_id') is-invalid @enderror" required>
                                     <option value="">Pilih Ruang</option>
                                     @foreach($ruang as $rng)
-                                    <option value="{{ $rng->id }}" {{ $jadwal->ruang_id == $rng->id ? 'selected' : '' }}>{{ $rng->nama_ruang }}</option>
+                                    <option value="{{ $rng->id }}" {{ $jadwal->ruang_id == $rng->id ? 'selected' : '' }}>{{ $rng->nama }}</option>
                                     @endforeach
                                 </select>
                                 @error('ruang_id')
@@ -65,7 +65,7 @@
                                 <select name="guru_id" id="guru_id" class="form-control @error('guru_id') is-invalid @enderror" required>
                                     <option value="">Pilih Guru</option>
                                     @foreach($guru as $gr)
-                                    <option value="{{ $gr->id }}" {{ $jadwal->guru_id == $gr->id ? 'selected' : '' }}>{{ $gr->nama_guru }}</option>
+                                    <option value="{{ $gr->id }}" {{ $jadwal->guru_id == $gr->id ? 'selected' : '' }}>{{ $gr->nama }}</option>
                                     @endforeach
                                 </select>
                                 @error('guru_id')
@@ -80,7 +80,7 @@
                                 <select name="jam_pelajaran_id" id="jam_pelajaran_id" class="form-control @error('jam_pelajaran_id') is-invalid @enderror" required>
                                     <option value="">Pilih Jam</option>
                                     @foreach($jamPelajaran as $jam)
-                                    <option value="{{ $jam->id }}" {{ $jadwal->jam_pelajaran_id == $jam->id ? 'selected' : '' }}>{{ $jam->nama_jam }} ({{ $jam->jam_mulai }} - {{ $jam->jam_selesai }})</option>
+                                    <option value="{{ $jam->id }}" {{ $jadwal->jam_pelajaran_id == $jam->id ? 'selected' : '' }}>{{ $jam->nama }} ({{ $jam->jam_mulai }} - {{ $jam->jam_selesai }})</option>
                                     @endforeach
                                 </select>
                                 @error('jam_pelajaran_id')
@@ -93,7 +93,7 @@
                                 <select name="hari_id" id="hari_id" class="form-control @error('hari_id') is-invalid @enderror" required>
                                     <option value="">Pilih Hari</option>
                                     @foreach($hari as $hr)
-                                    <option value="{{ $hr->id }}" {{ $jadwal->hari_id == $hr->id ? 'selected' : '' }}>{{ $hr->nama_hari }}</option>
+                                    <option value="{{ $hr->id }}" {{ $jadwal->hari_id == $hr->id ? 'selected' : '' }}>{{ $hr->nama }}</option>
                                     @endforeach
                                 </select>
                                 @error('hari_id')

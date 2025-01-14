@@ -14,7 +14,7 @@ class Siswa extends Model
         'user_id',
         'no_induk',
         'nisn',
-        'nama_siswa',
+        'nama',
         'kelas_id',
         'jk',
         'telp',
@@ -39,6 +39,36 @@ class Siswa extends Model
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'kelas_id');
+    }
+
+    public function jadwal()
+    {
+        return $this->hasMany(Jadwal::class, 'kelas_id', 'kelas_id');
+    }
+
+    function mapel()
+    {
+        return $this->belongsToMany(Mapel::class, 'jadwal', 'kelas_id', 'mapel_id');
+    }
+
+    public function kehadiran()
+    {
+        return $this->hasMany(Kehadiran::class, 'siswa_id');
+    }
+
+    public function nilai()
+    {
+        return $this->hasMany(Nilai::class, 'siswa_id');
+    }
+
+    public function rapot()
+    {
+        return $this->hasMany(Rapot::class, 'siswa_id');
+    }
+
+    public function penagihan()
+    {
+        return $this->hasMany(Penagihan::class);
     }
 
     protected $table = 'siswa';

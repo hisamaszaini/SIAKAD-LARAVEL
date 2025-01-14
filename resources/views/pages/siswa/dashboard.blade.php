@@ -6,14 +6,7 @@
 
 @section('content')
 <section class="section">
-    <div class="section-header">
-        <h1>{{ $title }}</h1>
-    </div>
-    <div class="section-body">
-        <div class="row">
-
-        </div>
-    </div>
+    @include('layouts.sectionheader')
 
     <div class="card">
         <div class="card-header">
@@ -22,47 +15,48 @@
         <div class="card-body">
             <div class="row">
                 @if($pengumuman)
-                <p class="ml-3">{{ $pengumuman->isi }}</p>
+                <div class="ml-3">{!! htmlspecialchars_decode($pengumuman->isi) !!}</div>
                 @else
-                <p class="ml-3">Tidak ada pengumuman.</p>
+                <div class="ml-3">Tidak ada pengumuman.</div>
                 @endif
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-lg-12 col-md-12 col-12 col-sm-12">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <h4>Jadwal Hari Ini</h4>
                 </div>
                 <div class="card-body">
-                    <table id="example" class="table table-striped table-bordered mt-1 table-sm" style="width:100%">
-                        <thead>
-                            <tr style="background-color: #F1F1F1">
-                                <th>Hari</th>
-                                <th>Jam</th>
-                                <th>Mata Pelajaran</th>
-                                <th>Guru</th>
-                                <th>Ruang</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($jadwal as $data)
-                            <tr>
-                                <td>{{ $data->hari->nama_hari }}</td>
-                                <td>{{ date("H:i", strtotime($data->jamPelajaran->jam_mulai)) }} - {{ date("H:i", strtotime($data->jamPelajaran->jam_selesai)) }}</td>
-                                <td>{{ $data->mapel->nama_mapel }}</td>
-                                <td>{{ $data->guru->nama_guru }}</td>
-                                <td>{{ $data->ruang->nama_ruang }}</td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="5" class="text-center">Jadwal tidak ditemukan</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th class="text-center">Hari</th>
+                                    <th class="text-center">Jam</th>
+                                    <th>Mata Pelajaran</th>
+                                    <th>Guru</th>
+                                    <th class="text-center">Ruang</th>
+                                </tr>
+                                @forelse ($jadwal as $data)
+                                <tr>
+                                    <td class="text-center">{{ $data->hari->nama }}</td>
+                                    <td class="text-center">{{ date("H:i", strtotime($data->jamPelajaran->jam_mulai)) }} - {{ date("H:i", strtotime($data->jamPelajaran->jam_selesai)) }}</td>
+                                    <td>{{ $data->mapel->nama }}</td>
+                                    <td>{{ $data->guru->nama }} {{ $data->guru->gelar }}</td>
+                                    <td class="text-center">{{ $data->ruang->nama }}</td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="text-center">Jadwal tidak ditemukan</td>
+                                </tr>
+                                @endforelse
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

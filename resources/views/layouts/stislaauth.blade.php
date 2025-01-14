@@ -27,7 +27,6 @@
                         <div class="login-brand">
                             <h1 class="text-danger">SI<span class="text-primary">AKAD</span></h1>
                         </div>
-
                         @yield('content')
                         <div class="simple-footer">
                             Copyright &copy; Siakad {{ date('Y') }}

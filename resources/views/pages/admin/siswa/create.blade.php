@@ -29,17 +29,21 @@
 
                     <form action="{{ route('siswa.store') }}" method="POST">
                         @csrf
-                        <div class="row">
-                            <div class="form-group col-md-6 col-12">
-                                <label for="no_induk">Nomor Induk Siswa<code>*)</code></label>
-                                <input type="text" name="no_induk" id="no_induk"
-                                    class="form-control @error('no_induk') is-invalid @enderror"
-                                    value="{{ old('no_induk') }}" required>
-                                @error('no_induk')
-                                <div class="invalid-feedback"> {{ $message }}</div>
-                                @enderror
+                        <div class="form-group row mb-4">
+                            <div class="col-sm-12 col-md-7">
+                                <div id="image-preview"
+                                    class="image-preview @error('foto') is-invalid @enderror"
+                                    style="background-position: center;">
+                                    <label for="image-upload" id="image-label">Upload Foto</label>
+                                    <input type="file" name="foto" id="image-upload" />
+                                    @error('foto')
+                                    <div class="invalid-feedback"> {{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
+                        </div>
 
+                        <div class="row">
                             <div class="form-group col-md-6 col-12">
                                 <label for="nisn">Nomor Induk Siswa Nasional <code>*)</code></label>
                                 <input type="text" name="nisn" id="nisn"
@@ -116,7 +120,7 @@
                             <div class="form-group col-md-6 col-12">
                                 <label for="tgl_masuk">Tanggal Masuk <code>*)</code></label>
                                 <input type="date" name="tgl_masuk" id="tgl_masuk"
-                                    class="form-control @error('tgl_masuk') is-invalid @enderror" value="{{ old('tgl_masuk') }}">
+                                    class="form-control @error('tgl_masuk') is-invalid @enderror" value="{{ old('tgl_masuk', date('Y-m-d')) }}">
                                 @error('tgl_masuk')
                                 <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror
@@ -129,12 +133,39 @@
                                     <option value="" disabled selected>Pilih Kelas</option>
                                     @foreach ($kelas as $item)
                                     <option value="{{ $item->id }}" {{ old('kelas_id') == $item->id ? 'selected' : '' }}>
-                                        {{ $item->nama_kls }}
+                                        {{ $item->nama }}
                                     </option>
                                     @endforeach
                                 </select>
                                 @error('kelas_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group col-md-6 col-12">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" id="email"
+                                    class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
+                                @error('email')
+                                <div class="invalid-feedback"> {{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group col-md-6 col-12">
+                                <label for="password">Password</label>
+                                <input type="password" name="password" id="password"
+                                    class="form-control @error('password') is-invalid @enderror" value="">
+                                @error('password')
+                                <div class="invalid-feedback"> {{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group col-md-6 col-12">
+                                <label for="password_confirmation">Konfirmasi Password</label>
+                                <input type="password_confirmation" name="password_confirmation" id="password_confirmation"
+                                    class="form-control @error('password') is-invalid @enderror" value="">
+                                @error('password')
+                                <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
@@ -236,6 +267,7 @@
 @endsection
 
 @section('plugins_js')
+@include('layouts.uploadfoto')
 @endsection
 
 @section('page_js')

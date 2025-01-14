@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Tambah Mata Pelajaran'])
+@extends('layouts.master', ['title' => $title])
 
 @section('plugins_css')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -14,7 +14,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Tambah Mata Pelajaran</h4>
+                    <h4>{{ $title }}</h4>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('mapel.store') }}" method="POST">
@@ -46,7 +46,7 @@
                                     <option value="">Pilih Kategori</option>
                                     @foreach ($kategori as $item)
                                     <option value="{{ $item->id }}" {{ old('kategori_id') == $item->id ? 'selected' : '' }}>
-                                        {{ $item->nama_kategori }}
+                                        {{ $item->nama }}
                                     </option>
                                     @endforeach
                                 </select>

@@ -24,7 +24,7 @@
                                 <select name="kelas_id" id="kelas_id" class="form-control @error('kelas_id') is-invalid @enderror" required>
                                     <option value="">Pilih Kelas</option>
                                     @foreach($kelas as $kls)
-                                    <option value="{{ $kls->id }}" {{ $absensi->kelas_id == $kls->id ? 'selected' : '' }}>{{ $kls->nama_kls }}</option>
+                                    <option value="{{ $kls->id }}" {{ $absensi->kelas_id == $kls->id ? 'selected' : '' }}>{{ $kls->nama }}</option>
                                     @endforeach
                                 </select>
                                 @error('kelas_id')
@@ -44,7 +44,7 @@
                             <div class="form-group col-md-6">
                                 <label for="guru_id">Dibuat oleh <code>*</code></label>
                                 <input type="hidden" name="guru_id" value="{{ $absensi->guru_id }}">
-                                <input type="text" class="form-control" value="{{ $absensi->guru->nama_guru }}" readonly>
+                                <input type="text" class="form-control" value="{{ $absensi->guru->nama }}" readonly>
                             </div>
                         </div>
                         <div class="card-footer text-right">

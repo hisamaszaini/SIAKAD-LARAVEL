@@ -21,7 +21,7 @@ class AdminGuruController extends Controller
         $query = Guru::with('user')->select('guru.*');
 
         if ($cari) {
-            $query->where('nama_guru', 'like', '%' . $cari . '%');
+            $query->where('nama', 'like', '%' . $cari . '%');
         }
 
         $datas = $query->paginate(config('app.pagination'));
@@ -43,6 +43,13 @@ class AdminGuruController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'foto' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg',
+                'max:1024',
+                'dimensions:min_width=300,min_height=300'
+            ],
             'nip' => 'required|string|max:30|unique:guru,nip',
             'nama' => 'required|string|max:50',
             'jk' => 'required|in:L,P',
@@ -56,7 +63,12 @@ class AdminGuruController extends Controller
             'tmp_lahir' => 'nullable|string|max:50',
             'tgl_masuk' => 'nullable|date',
             'gelar' => 'nullable|string|max:50',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'foto.required' => 'Foto harus diupload',
+            'foto.image' => 'File harus berupa gambar',
+            'foto.mimes' => 'Format foto harus jpeg, png, atau jpg',
+            'foto.max' => 'Ukuran foto tidak boleh lebih dari 1MB',
+            'foto.dimensions' => 'Dimensi foto tidak sesuai (min: 300x300)'
         ]);
 
         DB::beginTransaction();
@@ -64,31 +76,35 @@ class AdminGuruController extends Controller
         try {
             $password = $request->filled('password') ? bcrypt($request->password) : bcrypt(env('GURU_PASSDEFAULT', '12345678'));
 
+            $fotoPath = null;
+            if ($request->hasFile('foto')) {
+                $extension = $request->file('foto')->getClientOriginalExtension();
+                $newFileName = time() . $request->nip . '.' . $extension;
+
+                $fotoPath = $request->file('foto')->storeAs('guru_fotos', $newFileName, 'public');
+            }
+
             $user = User::create([
                 'name' => $request->nama,
                 'email' => $request->email,
                 'password' => $password,
                 'role' => 'Guru',
+                'profile_photo_path' => $fotoPath,
             ]);
-
-            $fotoPath = null;
-            if ($request->hasFile('foto')) {
-                $fotoPath = $request->file('foto')->store('guru_fotos', 'public');
-            }
 
             Guru::create([
                 'nip' => $request->nip,
-                'nama_guru' => $request->nama,
+                'nama' => $request->nama,
                 'jk' => $request->jk,
                 'alamat' => $request->alamat,
                 'telp' => $request->telp,
                 'email' => $request->email,
                 'user_id' => $user->id,
-                'pendidikan_terakhir' => $request->pendidikan_terakhir,
+                'pendidikan' => $request->pendidikan_terakhir,
                 'jabatan' => $request->jabatan,
                 'tgl_lahir' => $request->tgl_lahir,
                 'tmp_lahir' => $request->tmp_lahir,
-                'tanggal_masuk' => $request->tgl_masuk,
+                'tgl_masuk' => $request->tgl_masuk,
                 'gelar' => $request->gelar,
                 'foto' => $fotoPath,
             ]);
@@ -118,10 +134,14 @@ class AdminGuruController extends Controller
         $guru = Guru::findOrFail($id);
         $user = $guru->user;
     
-        // Log data request untuk debugging
-        \Log::info('Data request untuk update guru:', $request->all());
-    
         $request->validate([
+            'foto' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg',
+                'max:1024',
+                'dimensions:min_width=300,min_height=300'
+            ],
             'nip' => 'required|string|max:30|unique:guru,nip,' . $guru->id,
             'nama' => 'required|string|max:50',
             'jk' => 'required|in:L,P',
@@ -135,33 +155,41 @@ class AdminGuruController extends Controller
             'tmp_lahir' => 'nullable|string|max:50',
             'tgl_masuk' => 'nullable|date',
             'gelar' => 'nullable|string|max:50',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'foto.required' => 'Foto harus diupload',
+            'foto.image' => 'File harus berupa gambar',
+            'foto.mimes' => 'Format foto harus jpeg, png, atau jpg',
+            'foto.max' => 'Ukuran foto tidak boleh lebih dari 1MB',
+            'foto.dimensions' => 'Dimensi foto tidak sesuai (min: 300x300)'
         ]);
     
         DB::beginTransaction();
     
         try {
+
+            $fotoPath = $guru->foto;
+
             if ($request->hasFile('foto')) {
-                if ($guru->foto) {
-                    Storage::delete('public/' . $guru->foto);
+                if ($guru->foto && Storage::disk('public')->exists($guru->foto)) {
+                    Storage::disk('public')->delete($guru->foto);
                 }
-    
+                
                 $extension = $request->file('foto')->getClientOriginalExtension();
                 $newFileName = time() . $guru->id . '.' . $extension;
-                $guru->foto = $request->file('foto')->storeAs('guru_fotos', $newFileName, 'public');
+                $fotoPath = $request->file('foto')->storeAs('guru_fotos', $newFileName, 'public');
             }
     
             $guru->update([
                 'nip' => $request->nip,
-                'nama_guru' => $request->nama,
+                'nama' => $request->nama,
                 'jk' => $request->jk,
                 'alamat' => $request->alamat,
                 'telp' => $request->telp,
-                'pendidikan_terakhir' => $request->pendidikan_terakhir,
+                'pendidikan' => $request->pendidikan_terakhir,
                 'jabatan' => $request->jabatan,
                 'tgl_lahir' => $request->tgl_lahir,
                 'tmp_lahir' => $request->tmp_lahir,
-                'tanggal_masuk' => $request->tgl_masuk,
+                'tgl_masuk' => $request->tgl_masuk,
                 'gelar' => $request->gelar,
                 'foto' => $guru->foto,
             ]);
@@ -171,6 +199,8 @@ class AdminGuruController extends Controller
             }
             $user->name = $request->nama;
             $user->email = $request->email;
+            $user->profile_photo_path = $fotoPath;
+
             $user->save();
     
             DB::commit();
@@ -178,13 +208,6 @@ class AdminGuruController extends Controller
             return redirect()->route('guru.edit', ['id' => $guru->id])->with('success', 'Guru berhasil diperbarui!');
         } catch (\Exception $e) {
             DB::rollback();
-            
-            // Log error dengan detail
-            \Log::error('Gagal memperbarui data guru: ' . $e->getMessage(), [
-                'request' => $request->all(),
-                'guru_id' => $guru->id,
-            ]);
-    
             return redirect()->route('guru.edit', ['id' => $guru->id])->with('error', 'Gagal memperbarui data guru: ' . $e->getMessage());
         }
     }
@@ -218,7 +241,7 @@ class AdminGuruController extends Controller
         $title = "Cari";
         $pages = "guru";
         $cari = $request->get('cari');
-        $datas = Guru::where('nama_guru', 'like', '%' . $cari . '%')
+        $datas = Guru::where('nama', 'like', '%' . $cari . '%')
             ->join('users', 'guru.user_id', '=', 'users.id')
             ->select('guru.*', 'users.email')
             ->paginate(config('app.pagination'));

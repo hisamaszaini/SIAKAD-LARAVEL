@@ -14,7 +14,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Tambah Kelas</h4>
+                    <h4>{{ $title}}/h4>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('kelas.store') }}" method="POST">
@@ -49,7 +49,7 @@
                                     <option value="">Pilih Guru</option>
                                     @foreach($gurus as $guru)
                                     <option value="{{ $guru->id }}" {{ old('guru_id') == $guru->id ? 'selected' : '' }}>
-                                        {{ $guru->nama_guru }}
+                                        {{ $guru->nama }}
                                     </option>
                                     @endforeach
                                 </select>
