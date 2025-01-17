@@ -71,8 +71,7 @@ class AbsensiController extends Controller
             ]);
 
             DB::commit();
-            session()->flash('success', 'Absensi berhasil ditambahkan.');
-            return redirect()->route('guru.absensi.index');
+            return redirect()->route('guru.absensi.index')->with('success', 'Absensi berhasil ditambahkan.');
         } catch (\Exception $e) {
             DB::rollback();
             session()->flash('error', 'Gagal menambahkan absensi: ' . $e->getMessage());
@@ -124,7 +123,7 @@ class AbsensiController extends Controller
                 }
             }
 
-            $absensi->update_by = $guruId;
+            $absensi->updated_by = $guruId;
             $absensi->save();
     
             return redirect()->route('guru.absensi.isikehadiran', $request->absensi_id)->with('success', 'Kehadiran siswa berhasil ditambahkan.');
@@ -133,6 +132,7 @@ class AbsensiController extends Controller
             // \Log::error('Gagal menambahkan data absensi: ' . $e->getMessage(), [
             //     'request' => $request->all(),
             // ]);
+            dd($e);
     
             return redirect()->route('guru.absensi.index')->with('error', 'Gagal menambahkan kehadiran siswa. Silakan coba lagi.');
         }

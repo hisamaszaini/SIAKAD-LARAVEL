@@ -15,6 +15,16 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                <div class="card-header">
+                    <h4>{{ $tagihan->nama }} Kelas {{ $tagihan->tingkatan }}</h4>
+                    <div class="card-header-form">
+                      <form>
+                        <div class="input-group">
+                            <a href="{{ route('tagihan.export', $tagihan->id) }}" class="btn btn-icon btn-info"><i class="far fa-file-excel"></i> Export</a>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
                     <div class="card-body p-0 m-3">
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -37,13 +47,13 @@
                                         <td>{{ number_format($tagihan->nominal, 2, ',', '.') }}</td>
                                         <td>
                                             <select class="form-control status-selector" data-id="{{ $item->id }}">
-                                                <option value="belum_dibayar" {{ $item->status == 'belum_dibayar' ? 'selected' : '' }}>Belum Bayar</option>
-                                                <option value="lunas" {{ $item->status == 'lunas' ? 'selected' : '' }}>Lunas</option>
+                                                <option value="Belum Dibayar" {{ $item->status == 'Belum Dibayar' ? 'selected' : '' }}>Belum Bayar</option>
+                                                <option value="Lunas" {{ $item->status == 'Lunas' ? 'selected' : '' }}>Lunas</option>
                                             </select>
                                         </td>
                                         <td class="text-center">
                                             <button class="btn btn-sm btn-primary update-status" data-id="{{ $item->id }}">Update</button>
-                                            <button class="btn btn-sm btn-success print-receipt" data-id="{{ $item->id }}" style="display: {{ $item->status == 'lunas' ? 'inline-block' : 'none' }};">Print</button>
+                                            <button class="btn btn-sm btn-success print-receipt" data-id="{{ $item->id }}" style="display: {{ $item->status == 'Lunas' ? 'inline-block' : 'none' }};">Print</button>
                                         </td>
                                     </tr>
                                     @empty
@@ -75,7 +85,7 @@
                 const statusSelector = button.closest('tr').querySelector('.status-selector');
                 const status = statusSelector.value;
                 const id = button.getAttribute('data-id');
-                const printButton = button.closest('tr').querySelector('.print-receipt'); // Find the print button in the same row
+                const printButton = button.closest('tr').querySelector('.print-receipt');
 
                 fetch(`/admin/penagihan/${id}/update-status`, {
                         method: 'POST',
@@ -90,16 +100,25 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert('Status updated successfully.');
+                            //alert('Sukses.');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Data tagihan sukses diperbarui!',
+                            })
 
-                            // Show or hide the print button based on the updated status
                             if (status === 'Belum Bayar') {
-                                printButton.style.display = 'none'; // Hide the print button
+                                printButton.style.display = 'none';
                             } else if (status === 'Lunas') {
-                                printButton.style.display = 'inline-block'; // Show the print button
+                                printButton.style.display = 'inline-block';
                             }
                         } else {
-                            alert('Failed to update status.');
+                            //alert('Gagal');
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Data tagihan gagal diperbarui!',
+                            });
                         }
                     })
                     .catch(error => {
@@ -108,14 +127,35 @@
             });
         });
 
-        // Print button event listener
+
         document.querySelectorAll('.print-receipt').forEach(button => {
             button.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
-                // Redirect to the receipt page
-                window.location.href = `/siswa/kwitansi/${id}`;
+
+                const iframe = document.createElement('iframe');
+                iframe.style.position = 'absolute';
+                iframe.style.width = '0';
+                iframe.style.height = '0';
+                iframe.style.border = 'none';
+                iframe.src = `/siswa/kwitansi/${id}`;
+                document.body.appendChild(iframe);
+
+                iframe.onload = function() {
+                    iframe.contentWindow.print();
+
+                    setTimeout(() => {
+                        document.body.removeChild(iframe);
+                    }, 1000);
+                };
             });
         });
+
+        // document.querySelectorAll('.print-receipt').forEach(button => {
+        //     button.addEventListener('click', function() {
+        //         const id = this.getAttribute('data-id');
+        //         window.location.href = `/siswa/kwitansi/${id}`;
+        //     });
+        // });
     });
 </script>
 @endsection

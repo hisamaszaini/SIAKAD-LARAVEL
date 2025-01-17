@@ -20,7 +20,7 @@
                 </div>
                 <div class="card-body">
                     <form action="{{ route('blog.storepost') }}" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}" id="csrf-token" autocomplete="off">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}" id="csrf-token" autocomplete="off">
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Judul</label>
                             <div class="col-sm-12 col-md-7">
@@ -59,9 +59,14 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Gambar</label>
                             <div class="col-sm-12 col-md-7">
-                                <div id="image-preview" class="image-preview">
-                                    <label for="image-upload" id="image-label">Choose File</label>
+                                <div id="image-preview"
+                                    class="image-preview @error('image') is-invalid @enderror"
+                                    style="background-size: cover; background-position: center;">
+                                    <label for="image-upload" id="image-label">Upload Gambar</label>
                                     <input type="file" name="image" id="image-upload" />
+                                    @error('image')
+                                    <div class="invalid-feedback"> {{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -116,9 +121,9 @@
         });
     }
 </script>
+@include('layouts.uploadfoto')
 @endsection
 
 @section('page_js')
-@include('layouts.previewimage')
 @include('layouts.sweetalert2')
 @endsection

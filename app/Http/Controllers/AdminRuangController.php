@@ -53,7 +53,7 @@ class AdminRuangController extends Controller
 
             DB::commit();
             session()->flash('success', 'Data ruang berhasil ditambahkan.');
-            return redirect()->route('ruang');
+            return redirect()->route('ruang.index');
         } catch (\Exception $e) {
             DB::rollback();
             // \Log::error('Gagal menambahkan data RUANG: ' . $e->getMessage(), [

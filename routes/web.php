@@ -17,6 +17,8 @@ use App\Http\Controllers\AdminAbsensiController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\AdminTagihanController;
 use App\Http\Controllers\AdminBlogController;
+use App\Http\Controllers\AdminNilaiController;
+use App\Http\Controllers\AdminSettingController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GuruController;
@@ -95,6 +97,8 @@ Route::group(['middleware' => ['auth:web', 'verified', 'is_role:Admin']], functi
     Route::get('/admin/datasiswa/create', [AdminSiswaController::class, 'create'])->name('siswa.create');
     Route::post('/admin/datasiswa', [AdminSiswaController::class, 'store'])->name('siswa.store');
     Route::delete('/admin/datasiswa/multidel', [AdminSiswaController::class, 'multidel'])->name('siswa.multidel');
+    Route::get('/admin/export-siswa', [AdminSiswaController::class, 'export'])->name('siswa.export');;
+
 
     //Ruang
     Route::get('/admin/ruang', [AdminRuangController::class, 'index'])->name('ruang.index');
@@ -168,10 +172,17 @@ Route::group(['middleware' => ['auth:web', 'verified', 'is_role:Admin']], functi
     Route::get('/admin/datatagihan', [AdminTagihanController::class, 'create'])->name('tagihan.create');
     Route::post('/admin/datatagihan', [AdminTagihanController::class, 'store'])->name('tagihan.store');
     Route::post('/admin/penagihan/{tagihanId}', [AdminTagihanController::class, 'createPenagihan'])->name('penagihan.create');
+    Route::get('/admin/export-tagihan/{id}', [AdminTagihanController::class, 'export'])->name('tagihan.export');
+
 
     //Penagihan
     Route::get('/admin/daftarpenagihan/{tagihanId}', [AdminTagihanController::class, 'daftarPenagihan'])->name('penagihan.daftar');
     Route::post('/admin/penagihan/{id}/update-status', [AdminTagihanController::class, 'updateStatus'])->name('penagihan.updateStatus');
+
+    //Nilai Siswa
+    Route::get('/admin/nilai', [AdminNilaiController::class, 'index'])->name('nilai.index');
+    Route::get('/admin/nilai/{jadwal_id}/{guru_id}', [AdminNilaiController::class, 'view'])->name('nilai.view');
+    Route::get('/admin/nilaisiswa/{id}', [AdminNilaiController::class, 'viewnilaisiswa'])->name('nilai.siswa');
 
     //Blog Post
     Route::get('/admin/blog/posts', [AdminBlogController::class, 'blogListPost'])->name('blog.listpost');
@@ -191,6 +202,11 @@ Route::group(['middleware' => ['auth:web', 'verified', 'is_role:Admin']], functi
     Route::put('/admin/blog/datakategori/{idKategori}', [AdminBlogController::class, 'blogUpdateKategori'])->name('blog.updatekategori');
     Route::delete('/admin/blog/datakategori/{idKategori}', [AdminBlogController::class, 'destroyBlogKategori'])->name('blog.destroykategori');
     Route::delete('/admin/blog/datakategori/multidel', [AdminBlogController::class, 'multidelBlogKategori'])->name('blog.multidelkategori');
+
+    Route::get('/admin/settings', [AdminSettingController::class, 'index'])->name('settings');
+    Route::put('/admin/datasettings', [AdminSettingController::class, 'store'])->name('settings.store');
+    Route::get('/admin/chart-data', [DashboardController::class, 'chartData']);
+
 });
 
 //Guru

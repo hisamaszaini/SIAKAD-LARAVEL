@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
+use App\Exports\SiswaExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class AdminSiswaController extends Controller
 {
     public function index(Request $request)
@@ -48,6 +51,8 @@ class AdminSiswaController extends Controller
 
         $lastNoInduk = Siswa::max('no_induk') ?? 999;
         $siswaNoInduk = $lastNoInduk + 1;
+
+        // dd($request->all());
 
         $request->validate([
             'foto' => [
@@ -138,10 +143,8 @@ class AdminSiswaController extends Controller
 
             DB::commit();
 
-            session()->flash('success', 'Data siswa berhasil ditambahkan.');
-            return redirect()->route('siswa');
+            return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil ditambahkan.');
         } catch (\Exception $e) {
-            dd($e);            
             DB::rollback();
             session()->flash('error', 'Gagal menambahkan data siswa: ' . $e->getMessage());
             return redirect()->back()->withInput();
@@ -172,7 +175,7 @@ class AdminSiswaController extends Controller
                 'image',
                 'mimes:jpeg,png,jpg',
                 'max:1024',
-                'dimensions:min_width=100,min_height=100,max_width=2000,max_height=2000'
+                'dimensions:min_width=100,min_height=100,max_width=4000,max_height=4000'
             ],
             'no_induk' => 'required|string|max:30|unique:siswa,no_induk,' . $siswa->id,
             'nisn' => 'nullable|string|max:30|unique:siswa,nisn,' . $siswa->id,
@@ -286,5 +289,11 @@ class AdminSiswaController extends Controller
             DB::rollback();
             return redirect()->back()->with('error', 'Gagal menghapus data siswa.');
         }
+    }
+
+    public function export()
+    {
+        $columns = ['no_induk', 'nama', 'jk', 'kelas', 'tmp_lahir', 'tgl_lahir', 'tgl_masuk', 'alamat'];
+        return Excel::download(new SiswaExport($columns), 'siswa.xlsx');
     }
 }

@@ -6,12 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title }}</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="{{ asset('/js/alpine.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('/css/aos.css') }}" />
+    <script src="{{ asset('/js/aos.js') }}"></script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> -->
     <style>
+        body {
+            font-family: 'Open Sans';
+            font-size: 18px !important;
+            line-height: 24px;
+            font-weight: 400;
+        }
         .mt-min {
             margin-top: -70px;
         }
@@ -48,13 +55,12 @@
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <!-- Logo Sekolah -->
                         <div class="flex items-center">
                             <svg class="h-10 w-10 text-slate-800" viewBox="0 0 40 40" fill="currentColor">
                                 <path
                                     d="M20 2L4 10l16 8 16-8-16-8zM4 22l16 8 16-8-4-2-12 6-12-6-4 2zM4 30l16 8 16-8-4-2-12 6-12-6-4 2z" />
                             </svg>
-                            <span class="ml-2 text-slate-800 text-xl font-bold">SMP Cendekia</span>
+                            <span class="ml-2 text-slate-800 text-xl font-bold">{{ $settings->lembaga_nama }}</span>
                         </div>
                     </div>
                 </div>
@@ -121,15 +127,15 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
-                    <h3 class="text-xl font-bold mb-4">SMP Cendekia</h3>
+                    <h3 class="text-xl font-bold mb-4">{{ $settings->lembaga_nama }}</h3>
                     <p class="text-gray-300">Membentuk generasi unggul yang berakhlak mulia, berprestasi, dan berwawasan
                         global.</p>
                 </div>
                 <div id="kontak">
                     <h3 class="text-xl font-bold mb-4">Kontak</h3>
                     <ul class="space-y-2 text-gray-300">
-                        <li>Jl. Pendidikan No. 123</li>
-                        <li>Telp: (021) 1234-5678</li>
+                        <li>{{ $settings->lembaga_jalan }}</li>
+                        <li>Telp: {{ $settings->lembaga_telp }}</li>
                         <li>Email: info@smpcendekia.sch.id</li>
                     </ul>
                 </div>
@@ -173,7 +179,7 @@
                 </div>
             </div>
             <div class="mt-8 pt-8 border-t border-blue-800 text-center text-gray-300">
-                <p>&copy; 2024 SMP Cendekia. All rights reserved.</p>
+                <p>&copy; 2024 {{ $settings->lembaga_nama }}. All rights reserved.</p>
             </div>
         </div>
     </footer>

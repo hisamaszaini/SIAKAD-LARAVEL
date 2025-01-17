@@ -105,6 +105,9 @@ class AdminBlogController extends Controller
             'kategori_id' => 'nullable|exists:blog_kategori,id',
         ], [
             'title.max' => 'Judul tidak boleh lebih dari 255 karakter.',
+            'image.image' => 'File harus berupa gambar.',
+            'image.mimes' => 'Format gambar harus salah satu dari: jpeg, png, jpg, gif, webp.',
+            'image.max' => 'Ukuran gambar tidak boleh lebih dari 1MB.',
         ]);
 
         $blogPost = BlogPost::findOrFail($idPost);
@@ -112,7 +115,7 @@ class AdminBlogController extends Controller
 
         if ($request->hasFile('image')) {
             if ($blogPost->image) {
-                Storage::delete('images/' . $blogPost->image);
+                Storage::disk('public')->delete('uploads/' . $blogPost->image);
             }
             $imageName = $this->uploadImage($request, $slug);
         } else {

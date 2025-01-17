@@ -48,7 +48,7 @@ class AdminGuruController extends Controller
                 'image',
                 'mimes:jpeg,png,jpg',
                 'max:1024',
-                'dimensions:min_width=300,min_height=300'
+                // 'dimensions:min_width=300,min_height=300'
             ],
             'nip' => 'required|string|max:30|unique:guru,nip',
             'nama' => 'required|string|max:50',
@@ -68,7 +68,7 @@ class AdminGuruController extends Controller
             'foto.image' => 'File harus berupa gambar',
             'foto.mimes' => 'Format foto harus jpeg, png, atau jpg',
             'foto.max' => 'Ukuran foto tidak boleh lebih dari 1MB',
-            'foto.dimensions' => 'Dimensi foto tidak sesuai (min: 300x300)'
+            // 'foto.dimensions' => 'Dimensi foto tidak sesuai (min: 300x300)'
         ]);
 
         DB::beginTransaction();
@@ -86,6 +86,7 @@ class AdminGuruController extends Controller
 
             $user = User::create([
                 'name' => $request->nama,
+                'username' => $request->nip,
                 'email' => $request->email,
                 'password' => $password,
                 'role' => 'Guru',
@@ -111,12 +112,11 @@ class AdminGuruController extends Controller
 
             DB::commit();
 
-            session()->flash('success', 'Data guru berhasil ditambahkan.');
-            return redirect()->route('guru');
+            return redirect()->route('guru.index')->with('success', 'Data guru berhasil ditambahkan!');
         } catch (\Exception $e) {
             DB::rollback();
-            session()->flash('error', 'Gagal menambahkan data guru: ' . $e->getMessage());
-            return redirect()->back()->withInput();
+            dd($e);
+            return redirect()->back()->with('error', 'Gagal menambahkan data guru!');
         }
     }
 
@@ -191,7 +191,7 @@ class AdminGuruController extends Controller
                 'tmp_lahir' => $request->tmp_lahir,
                 'tgl_masuk' => $request->tgl_masuk,
                 'gelar' => $request->gelar,
-                'foto' => $guru->foto,
+                'foto' => $fotoPath,
             ]);
     
             if ($request->filled('password')) {
@@ -208,7 +208,8 @@ class AdminGuruController extends Controller
             return redirect()->route('guru.edit', ['id' => $guru->id])->with('success', 'Guru berhasil diperbarui!');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->route('guru.edit', ['id' => $guru->id])->with('error', 'Gagal memperbarui data guru: ' . $e->getMessage());
+            dd($e);
+            //return redirect()->route('guru.edit', ['id' => $guru->id])->with('error', 'Gagal memperbarui data guru: ' . $e->getMessage());
         }
     }
 

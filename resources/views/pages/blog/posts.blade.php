@@ -8,16 +8,15 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         @foreach ($posts as $post)
         <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105">
-            <!-- Post Thumbnail -->
-            <img src="{{ $post->image ? asset('storage/uploads/' . $post->image) : 'https://via.placeholder.com/400x250' }}" 
-                alt="{{ $post->judul }}" class="w-full h-48 object-cover">
+            <a href="{{ route('blog.post', $post->slug) }}"><img src="{{ $post->image ? asset('storage/uploads/' . $post->image) : 'https://via.placeholder.com/400x250' }}" 
+                alt="{{ $post->judul }}" class="w-full h-48 object-cover"></a>
             <div class="p-6">
-                <h2 class="text-xl font-bold mb-2">
+                <h2 class="text-xl font-bold">
                     <a href="{{ route('blog.post', $post->slug) }}" class="hover:text-blue-600">
                         {{ $post->title }}
                     </a>
                 </h2>
-                <p class="text-gray-600 text-sm mb-4">
+                <p class="text-gray-600 text-sm mt-2 mb-4">
                     {{ Str::limit(strip_tags($post->content), 100) }}
                 </p>
                 <div class="text-gray-500 text-xs flex items-center justify-between">

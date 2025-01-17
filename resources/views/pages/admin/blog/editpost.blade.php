@@ -20,6 +20,7 @@
                 </div>
                 <div class="card-body">
                     <form action="{{ route('blog.updatepost', $post->id) }}" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}" id="csrf-token" autocomplete="off">
                         @csrf
                         @method('PUT')
                         <div class="form-group row mb-4">
@@ -62,12 +63,14 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Gambar</label>
                             <div class="col-sm-12 col-md-7">
-                                <div id="image-preview" class="image-preview" style="border: 1px dashed #ccc; height: 200px; position: relative;">
-                                    @if($post->image)
-                                    <img src="{{ asset('storage/uploads/' . $post->image) }}" alt="Gambar Lama" style="width: 100%; height: 100%; object-fit: cover;" />
-                                    @endif
-                                    <label for="image-upload" id="image-label" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.7); padding: 5px; cursor: pointer;">Choose File</label>
-                                    <input type="file" name="image" id="image-upload" style="display: none;" />
+                                <div id="image-preview"
+                                    class="image-preview @error('image') is-invalid @enderror"
+                                    style="background-image: url('{{ $post->image ? asset('storage/uploads/' . $post->image) : '' }}'); background-size: cover; background-position: center;">
+                                    <label for="image-upload" id="image-label">Upload Gambar</label>
+                                    <input type="file" name="image" id="image-upload" />
+                                    @error('image')
+                                    <div class="invalid-feedback"> {{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -91,12 +94,40 @@
         $(".summernote").summernote({
             dialogsInBody: true,
             minHeight: 250,
+            callbacks: {
+                onImageUpload: function(files) {
+                    uploadImage(files[0]);
+                }
+            }
         });
-    };
+    }
+
+    function uploadImage(file) {
+        let data = new FormData();
+        data.append("image", file);
+        let csrfToken = document.getElementById('csrf-token').value;
+
+        $.ajax({
+            url: "{{ route('upload.summernote.image') }}",
+            method: "POST",
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                $('.summernote').summernote('insertImage', response.url);
+            },
+            error: function() {
+                alert("Gagal mengunggah gambar.");
+            }
+        });
+    }
 </script>
+@include('layouts.uploadfoto')
 @endsection
 
 @section('page_js')
-@include('layouts.previewimage')
 @include('layouts.sweetalert2')
 @endsection

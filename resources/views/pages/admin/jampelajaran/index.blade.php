@@ -29,43 +29,43 @@
                     </div>
                 </div>
 
-                <table class="table table-striped table-bordered mt-1 table-sm" style="width:100%">
-                    <thead>
-                        <tr style="background-color: #F1F1F1">
-                            <th>No</th>
-                            <th>Nama Jam</th>
-                            <th>Jam Mulai</th>
-                            <th>Jam Selesai</th>
-                            <th width="10%" class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($datas as $key => $jam)
-                        <tr id="sid{{ $jam->id }}">
-                            <td>{{ $key + 1 }}</td>
-                            <td>{{ $jam->nama }}</td>
-                            <td>{{ date("h:i", strtotime($jam->jam_mulai)) }}</td>
-                            <td>{{ date("h:i", strtotime($jam->jam_selesai)) }}</td>
-                            <td class="text-center">
-                                <x-button-edit link="{{ route('jampelajaran.edit', $jam->id) }}" />
-                                <form action="{{ route('jampelajaran.destroy', $jam->id) }}" method="POST" style="display:inline;" class="delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <x-button-delete link="#" data-id="{{ $jam->id }}" />
-                                </form>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="5" class="text-center">Data tidak ditemukan</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Jam</th>
+                                <th>Jam Mulai</th>
+                                <th>Jam Selesai</th>
+                                <th width="10%" class="text-center">Aksi</th>
+                            </tr>
+                            @forelse ($datas as $key => $jam)
+                            <tr id="sid{{ $jam->id }}">
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $jam->nama }}</td>
+                                <td>{{ date("h:i", strtotime($jam->jam_mulai)) }}</td>
+                                <td>{{ date("h:i", strtotime($jam->jam_selesai)) }}</td>
+                                <td class="text-center">
+                                    <x-button-edit link="{{ route('jampelajaran.edit', $jam->id) }}" />
+                                    <form action="{{ route('jampelajaran.destroy', $jam->id) }}" method="POST" style="display:inline;" class="delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <x-button-delete link="#" data-id="{{ $jam->id }}" />
+                                    </form>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center">Data tidak ditemukan</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
 
-                <div class="d-flex justify-content-between flex-row-reverse mt-3">
-                    <div>
-                        {{ $datas->links('layouts.pagination') }}
+                    <div class="d-flex justify-content-between flex-row-reverse mt-3">
+                        <div>
+                            {{ $datas->links('layouts.pagination') }}
+                        </div>
                     </div>
                 </div>
             </div>

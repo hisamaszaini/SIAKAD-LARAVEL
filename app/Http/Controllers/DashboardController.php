@@ -29,6 +29,7 @@ class DashboardController extends Controller
         $perempuan = Siswa::where('jk', '!=', 'P')->count();
 
         if (($authSam->role) == 'Admin') {
+
             return view('pages.admin.dashboard', compact('title', 'pages', 'authSam', 'guru', 'kelas', 'mapel', 'pengumuman', 'laki', 'perempuan'));
         } else if (($authSam->role) == 'Guru') {
             $guru_id = Guru::where('user_id', $authSam->id)->pluck('id');
@@ -40,17 +41,29 @@ class DashboardController extends Controller
                 abort(404, 'Data siswa tidak ditemukan');
             }
             $id_kelas = $siswa->kelas->id;
-        
+
             $jadwal = Jadwal::with(['mapel', 'ruang', 'guru', 'jamPelajaran', 'hari'])
                 ->where('kelas_id', $id_kelas)
                 ->orderBy('hari_id', 'asc')
                 ->orderBy('jam_pelajaran_id', 'asc')
                 ->get();
-        
+
             return view('pages.siswa.dashboard', compact('title', 'pages', 'authSam', 'siswa', 'jadwal', 'pengumuman'));
         } else {
             //return view('pages.admin.dashboard.index', compact('pages', 'mapel', 'laki', 'perempuan'));
             echo "Role Tidak Ada!";
         }
+    }
+
+    public function chartData()
+    {
+        $kelas = Kelas::withCount('siswa')->get();
+
+        $data = [
+            'labels' => $kelas->pluck('nama'),
+            'data' => $kelas->pluck('siswa_count'),
+        ];
+
+        return response()->json($data);
     }
 }

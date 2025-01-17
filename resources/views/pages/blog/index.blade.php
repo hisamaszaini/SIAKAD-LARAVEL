@@ -21,8 +21,7 @@
             <img src="{{ asset('storage/uploads/bg-gedung.jpg') }}" alt="Slide 1" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                 <div class="text-center text-white px-4">
-                    <h1 class="text-4xl md:text-6xl font-bold mb-4" data-aos="fade-up">Selamat Datang di SMP
-                        Cendekia</h1>
+                    <h1 class="text-4xl md:text-6xl font-bold mb-4" data-aos="fade-up">Selamat Datang di {{ $settings->lembaga_nama }}</h1>
                     <p class="text-xl md:text-2xl mb-8" data-aos="fade-up" data-aos-delay="200">Membentuk Generasi
                         Unggul dan Berakhlak Mulia</p>
                     <div data-aos="fade-up">
@@ -95,17 +94,17 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center transition-transform" data-aos="fade-up">
             <div class="bg-white p-6 lg:p-8 sm:p-6 duration-500 transition-transform hover:scale-105 rounded-lg shadow-lg"
                 data-aos-delay="100">
-                <div class="text-4xl font-bold text-blue-600 mb-2 hover:scale-110">500</div>
+                <div class="text-4xl font-bold text-blue-600 mb-2 hover:scale-110">{{ $siswaCount }}</div>
                 <div class="text-gray-600">Siswa Aktif</div>
             </div>
             <div class="bg-white p-6 lg:p-8 duration-500 transition-transform hover:scale-105 rounded-lg shadow-lg"
                 data-aos-delay="150">
-                <div class="text-4xl font-bold text-blue-600 mb-2 hover:scale-110">37</div>
+                <div class="text-4xl font-bold text-blue-600 mb-2 hover:scale-110">{{ $guruCount }}</div>
                 <div class="text-gray-600">Guru & Staff</div>
             </div>
             <div class="bg-white p-6 lg:p-8 duration-500 transition-transform hover:scale-105 rounded-lg shadow-lg"
                 data-aos-delay="200">
-                <div class="text-4xl font-bold text-blue-600 mb-2 hover:scale-110">15</div>
+                <div class="text-4xl font-bold text-blue-600 mb-2 hover:scale-110">{{ $kelasCount }}</div>
                 <div class="text-gray-600">Ruang Kelas</div>
             </div>
             <div class="bg-white p-6 lg:p-8 duration-500 transition-transform hover:scale-105 rounded-lg shadow-lg"

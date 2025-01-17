@@ -27,41 +27,53 @@
                         <x-button-create link="{{ route('pengumuman.create') }}"></x-button-create>
                     </div>
                 </div>
-                <table id="example" class="table table-striped table-bordered mt-1 table-sm" style="width:100%">
-                    <thead>
-                        <tr style="background-color: #F1F1F1">
-                            <th class="text-center py-2 min-row"> <input type="checkbox" id="chkCheckAll"> All</th>
-                            <th>Tanggal Dibuat</th>
-                            <th>Judul</th>
-                            <th width="10%" class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($datas as $item)
-                        <tr>
-                            <td class="text-center py-2 min-row"><input type="checkbox" name="ids" class="checkBoxClass" value="{{ $item->id }}"></td>
-                            <td>{{ date("d F Y", strtotime($item->created_at)) }}</td>
-                            <td>{{ $item->judul }}</td>
-                            <td class="text-center">
-                                <x-button-edit link="{{ route('pengumuman.edit', $item->id) }}" />
-                                <x-button-delete link="{{ route('pengumuman.destroy', $item->id) }}" />
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="4" class="text-center">Data tidak ditemukan</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-                <div class="d-flex justify-content-between flex-row-reverse mt-3">
-                    <div>
-                        {{ $datas->links('layouts.pagination') }}
-                    </div>
-                    <div>
-                        <a href="#" class="btn btn-sm btn-danger mb-2" id="deleteAllSelectedRecord" data-toggle="tooltip" data-placement="top" title="Hapus Terpilih">
-                            <i class="fas fa-trash-alt mr-2"></i> Hapus Terpilih
-                        </a>
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <div class="custom-checkbox custom-control">
+                                        <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" class="custom-control-input"
+                                            id="chkCheckAll">
+                                        <label for="chkCheckAll" class="custom-control-label"> All</label>
+                                    </div>
+                                </th>
+                                <th>Tanggal Dibuat</th>
+                                <th>Judul</th>
+                                <th width="10%" class="text-center">Aksi</th>
+                            </tr>
+                            @forelse($datas as $item)
+                            <tr>
+                                <td class="p-0 text-center">
+                                    <div class="custom-checkbox custom-control">
+                                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input checkBoxClass" id="checkbox-{{ $item->id }}" name="ids" value="{{ $item->id }}">
+                                        <label for="checkbox-{{ $item->id }}" class="custom-control-label">&nbsp;</label>
+                                    </div>
+                                </td>
+                                <td>{{ date("d F Y", strtotime($item->created_at)) }}</td>
+                                <td>{{ $item->judul }}</td>
+                                <td class="text-center">
+                                    <x-button-edit link="{{ route('pengumuman.edit', $item->id) }}" />
+                                    <x-button-delete link="{{ route('pengumuman.destroy', $item->id) }}" />
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="text-center">Data tidak ditemukan</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-between flex-row-reverse mt-3">
+                        <div>
+                            {{ $datas->links('layouts.pagination') }}
+                        </div>
+                        <div>
+                            <a href="#" class="btn btn-sm btn-danger mb-2" id="deleteAllSelectedRecord" data-toggle="tooltip" data-placement="top" title="Hapus Terpilih">
+                                <i class="fas fa-trash-alt mr-2"></i> Hapus Terpilih
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

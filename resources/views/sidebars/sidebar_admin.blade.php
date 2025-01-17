@@ -3,6 +3,13 @@
     <li class="{{$pages=='dashboard' ? 'active' : ''}}">
         <a href="{{ route('dashboard') }}" class="nav-link"><i class="fas fa-home"></i><span>Dashboard</span></a>
     </li>
+    <li class="menu-header">SIAKAD</li>
+    <li class="{{$pages=='settings' ? 'active' : ''}}">
+        <a class="nav-link" href="{{ route('settings') }}">
+        <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </a>
+    </li>
     <li class="menu-header">Akademik</li>
     <li class="dropdown {{$pages=='users' || $pages=='jampelajaran' || $pages=='siswa' || $pages=='guru' || $pages=='kelas' || $pages=='ruang' || $pages=='mapel' || $pages=='kategori' ? 'active' : ''}}">
         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-dumpster"></i> <span>Mastering</span></a>
@@ -66,9 +73,15 @@
                     <span>Absensi</span>
                 </a>
             </li>
+            <li class="{{$pages=='nilai' ? 'active' : ''}}">
+                <a class="nav-link" href="{{ route('nilai.index') }}">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Nilai</span>
+                </a>
+            </li>
         </ul>
     </li>
-    <li class="{{$pages=='tagihan' ? 'active' : ''}}">
+    <li class="{{$pages=='tagihan' || $pages=='penagihan' ? 'active' : ''}}">
         <a href="{{ route('tagihan.index') }}" class="nav-link"><i class="fas fa-money-bill"></i><span>Tagihan</span></a>
     </li>
     <li class="{{$pages=='pengumuman' ? 'active' : ''}}">
@@ -76,17 +89,17 @@
     </li>
     <li class="menu-header">Blog</li>
     <li class="dropdown {{$pages=='blogpost' || $pages=='blogkategori'  ? 'active' : ''}}">
-        <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Post</span></a>
+        <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-blog"></i> <span>Blog</span></a>
         <ul class="dropdown-menu">
             <li class="{{$pages=='blogpost' ? 'active' : ''}}">
                 <a class="nav-link" href="{{ route('blog.listpost') }}">
-                    <i class="fas fa-calendar"></i>
+                    <i class="fas fa-pencil-alt"></i>
                     <span>Post</span>
                 </a>
             </li>
             <li class="{{$pages=='blogkategori' ? 'active' : ''}}">
                 <a class="nav-link" href="{{ route('blog.listkategori') }}">
-                    <i class="fas fa-calendar"></i>
+                    <i class="fas fa-tags"></i>
                     <span>Kategori</span>
                 </a>
             </li>
@@ -95,7 +108,7 @@
     <li class="menu-header">Akun</li>
     <li class="{{$pages=='profile' ? 'active' : ''}}">
         <a class="nav-link" href="{{ route('profile') }}">
-            <i class="fas fa-cog"></i>
+        <i class="fas fa-user-cog"></i>
             <span>Settings</span>
         </a>
     </li>
@@ -104,7 +117,7 @@
             @csrf
         </form>
         <a href="#" class="dropdown-item has-icon text-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-        <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+            <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
         </a>
     </li>
 </ul>

@@ -17,8 +17,21 @@
                     <h4>{{ $title }}</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('guru.store') }}" method="POST">
+                    <form action="{{ route('guru.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        <div class="form-group row mb-4">
+                            <div class="col-sm-12 col-md-7">
+                                <div id="image-preview"
+                                    class="image-preview @error('foto') is-invalid @enderror"
+                                    style="background-position: center;">
+                                    <label for="image-upload" id="image-label">Upload Foto</label>
+                                    <input type="file" name="foto" id="image-upload" />
+                                    @error('foto')
+                                    <div class="invalid-feedback"> {{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="form-group col-md-6 col-12">
                                 <label for="nomerinduk">Nomor Induk Pegawai <code>*)</code></label>
@@ -144,7 +157,7 @@
                             <div class="form-group col-md-6 col-12">
                                 <label for="tgl_masuk">Tanggal Masuk</label>
                                 <input type="date" name="tgl_masuk" id="tgl_masuk"
-                                    class="form-control @error('tgl_masuk') is-invalid @enderror" value="{{ old('tgl_masuk', date('Y-m-d') }}">
+                                    class="form-control @error('tgl_masuk') is-invalid @enderror" value="{{ old('tgl_masuk', date('Y-m-d')) }}">
                                 @error('tgl_masuk')
                                 <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror
@@ -155,15 +168,6 @@
                                 <input type="text" name="gelar" id="gelar"
                                     class="form-control @error('gelar') is-invalid @enderror" value="{{ old('gelar') }}">
                                 @error('gelar')
-                                <div class="invalid-feedback"> {{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group col-md-6 col-12">
-                                <label for="foto">Foto</label>
-                                <input type="file" name="foto" id="foto"
-                                    class="form-control @error('foto') is-invalid @enderror">
-                                @error('foto')
                                 <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror
                             </div>
@@ -182,12 +186,8 @@
 </section>
 @endsection
 
-@section('block plugins_js')
-<script src="../node_modules/chart.js/dist/Chart.min.js"></script>
-<script src="../node_modules/jqvmap/dist/jquery.vmap.min.js"></script>
-<script src="../node_modules/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-<script src="../node_modules/summernote/dist/summernote-bs4.js"></script>
-<script src="../node_modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
+@section('plugins_js')
+@include('layouts.uploadfoto')
 @endsection
 
 @section('page_js')

@@ -17,14 +17,12 @@
             </div>
             <div class="card-body">
                 <table class="table table-striped">
-                    <thead>
+                    <tbody>
                         <tr>
                             <th>No</th>
                             <th>Nama Siswa</th>
                             <th>Status Kehadiran</th>
                         </tr>
-                    </thead>
-                    <tbody>
                         @foreach($siswas as $key => $siswa)
                         <tr data-siswa-id="{{ $siswa->id }}">
                             <td>{{ $key + 1 }}</td>

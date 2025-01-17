@@ -20,6 +20,20 @@
                     <form action="{{ route('guru.update', $guru->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
+                        <div class="form-group row mb-4">
+                            <div class="col-sm-12 col-md-7">
+                                <div id="image-preview"
+                                    class="image-preview @error('foto') is-invalid @enderror"
+                                    style="background-image: url('{{ $guru->foto ? asset('storage/' . $guru->foto) : '' }}'); background-size: cover; background-position: center;">
+                                    <label for="image-upload" id="image-label">Upload Foto</label>
+                                    <input type="file" name="foto" id="image-upload" />
+                                    @error('foto')
+                                    <div class="invalid-feedback"> {{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="form-group col-md-6 col-12">
                                 <label for="nomerinduk">Nomor Induk Pegawai <code>*)</code></label>
@@ -109,7 +123,7 @@
                             <div class="form-group col-md-6 col-12">
                                 <label for="pendidikan_terakhir">Pendidikan Terakhir</label>
                                 <input type="text" name="pendidikan_terakhir" id="pendidikan_terakhir"
-                                    class="form-control @error('pendidikan_terakhir') is-invalid @enderror" value="{{ old('pendidikan_terakhir', $guru->pendidikan_terakhir) }}">
+                                    class="form-control @error('pendidikan_terakhir') is-invalid @enderror" value="{{ old('pendidikan_terakhir', $guru->pendidikan) }}">
                                 @error('pendidikan_terakhir')
                                 <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror
@@ -154,17 +168,8 @@
                             <div class="form-group col-md-6 col-12">
                                 <label for="tgl_masuk">Tanggal Masuk</label>
                                 <input type="date" name="tgl_masuk" id="tgl_masuk"
-                                    class="form-control @error('tgl_masuk') is-invalid @enderror" value="{{ old('tgl_masuk', $guru->tanggal_masuk) }}">
+                                    class="form-control @error('tgl_masuk') is-invalid @enderror" value="{{ old('tgl_masuk', $guru->tgl_masuk) }}">
                                 @error('tanggal_masuk')
-                                <div class="invalid-feedback"> {{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group col-md-6 col-12">
-                                <label for="foto">Foto</label>
-                                <input type="file" name="foto" id="foto"
-                                    class="form-control @error('foto') is-invalid @enderror">
-                                @error('foto')
                                 <div class="invalid-feedback"> {{ $message }}</div>
                                 @enderror
                             </div>
@@ -182,7 +187,8 @@
 </section>
 @endsection
 
-@section('block plugins_js')
+@section('plugins_js')
+@include('layouts.uploadfoto')
 @endsection
 
 @section('page_js')

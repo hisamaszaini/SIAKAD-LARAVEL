@@ -71,9 +71,34 @@
         document.querySelectorAll('.print-receipt').forEach(button => {
             button.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
-                window.location.href = `/siswa/kwitansi/${id}`;
+
+                // Buat iframe untuk memuat halaman
+                const iframe = document.createElement('iframe');
+                iframe.style.position = 'absolute';
+                iframe.style.width = '0';
+                iframe.style.height = '0';
+                iframe.style.border = 'none';
+                iframe.src = `/siswa/kwitansi/${id}`;
+                document.body.appendChild(iframe);
+
+                // Tunggu hingga konten iframe selesai dimuat, lalu cetak
+                iframe.onload = function() {
+                    iframe.contentWindow.print();
+
+                    // Hapus iframe setelah proses cetak selesai
+                    setTimeout(() => {
+                        document.body.removeChild(iframe);
+                    }, 1000);
+                };
             });
         });
+        
+        // document.querySelectorAll('.print-receipt').forEach(button => {
+        //     button.addEventListener('click', function() {
+        //         const id = this.getAttribute('data-id');
+        //         window.location.href = `/siswa/kwitansi/${id}`;
+        //     });
+        // });
     });
 </script>
 @endsection

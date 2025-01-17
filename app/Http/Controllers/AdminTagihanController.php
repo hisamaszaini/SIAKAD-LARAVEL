@@ -10,6 +10,9 @@ use App\Models\Penagihan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+use App\Exports\TagihanPenagihanExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class AdminTagihanController extends Controller
 {
 
@@ -200,5 +203,16 @@ class AdminTagihanController extends Controller
 
         $title = "Kwitansi Pembayaran";
         return view('pages.admin.tagihan.kwitansi', compact('title', 'penagihan'));
+    }
+
+    public function export($tagihanId)
+    {
+        $tagihan = Tagihan::find($tagihanId);
+        
+        if (!$tagihan) {
+            return redirect()->back()->with('error', 'Tagihan tidak ditemukan.');
+        }
+
+        return Excel::download(new TagihanPenagihanExport($tagihanId), 'tagihan_penagihan.xlsx');
     }
 }

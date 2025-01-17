@@ -27,7 +27,7 @@
                     </div>
                     @endif
 
-                    <form action="{{ route('siswa.store') }}" method="POST">
+                    <form action="{{ route('siswa.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row mb-4">
                             <div class="col-sm-12 col-md-7">
@@ -162,7 +162,7 @@
 
                             <div class="form-group col-md-6 col-12">
                                 <label for="password_confirmation">Konfirmasi Password</label>
-                                <input type="password_confirmation" name="password_confirmation" id="password_confirmation"
+                                <input type="password" name="password_confirmation" id="password_confirmation"
                                     class="form-control @error('password') is-invalid @enderror" value="">
                                 @error('password')
                                 <div class="invalid-feedback"> {{ $message }}</div>
