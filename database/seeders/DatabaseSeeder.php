@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             HariSeeder::class,
             UserSeeder::class,
+            SettingsSeeder::class,
+            BlogSeeder::class,
         ]);
     }
 }
