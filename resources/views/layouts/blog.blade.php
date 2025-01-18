@@ -50,7 +50,7 @@
 
 <body class="font-sans">
     <!-- Navbar -->
-    <nav class="bg-white py-2 fixed w-full z-50" id="navbar" x-data="{ isOpen: false }">
+    <nav class="bg-white fixed w-full z-50 border-b border-blue-200 py-2" id="navbar" x-data="{ isOpen: false }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">

@@ -63,7 +63,7 @@ class BlogController extends Controller
         }
 
         $settings = Settings::first();
-        $posts = BlogPost::where('kategori_id', $kategori->id)->orderBy('id')->paginate(8);
+        $posts = BlogPost::where('kategori_id', $kategori->id)->orderBy('id', 'desc')->paginate($settings->pagination);
         $title = "Kategori " . $kategori->nama  . " | " . $settings->lembaga_nama;
         return view('pages.blog.kategori', compact('title', 'posts', 'kategori', 'settings'));
     }
