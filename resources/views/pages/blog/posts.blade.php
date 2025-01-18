@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="container max-w-7xl mx-auto pt-28 pb-1 px-4">
-    <h1 class="text-3xl font-bold mb-8 text-center">{{ $title }}</h1>
+    <h1 class="text-3xl font-bold mb-8 text-center" data-aos="fade-down">{{ $title }}</h1>
 
     <!-- List Posts -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up" data-aos-duration="1000">
         @foreach ($posts as $post)
         <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105">
             <a href="{{ route('blog.post', $post->slug) }}"><img src="{{ $post->image ? asset('storage/uploads/' . $post->image) : 'https://via.placeholder.com/400x250' }}" 

@@ -121,49 +121,24 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-aos="fade-up">
         <h2 class="text-3xl font-bold text-center mb-12">Berita & Pengumuman</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-aos="fade-up">
-            <!-- Post 1 -->
+            @foreach($posts as $post)
             <div
                 class="bg-white rounded-lg shadow-lg overflow-hidden duration-500 transition-transform hover:scale-105">
-                <img src="https://picsum.photos/id/24/400/250" alt="Berita 1" class="w-full h-48 object-cover">
+                <a href="{{ route('blog.post', $post->slug) }}"><img src="{{ $post->image ? asset('storage/uploads/' . $post->image) : 'https://via.placeholder.com/400x250' }}" alt="Berita 1" class="w-full h-48 object-cover">
                 <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2">Juara Olimpiade Sains Nasional</h3>
-                    <p class="text-gray-600 mb-4">Tim SMP Cendekia berhasil meraih medali emas dalam Olimpiade Sains
-                        Nasional 2024...</p>
-                    <a href="#" class="text-blue-600 hover:text-blue-800">Baca selengkapnya →</a>
+                    <h3 class="text-xl font-bold mb-2">{{ $post->title }}</h3>
+                    <p class="text-gray-600 mb-4">{{ Str::limit(strip_tags($post->content), 100) }}</p>
+                    <a href="{{ route('blog.post', $post->slug) }}" class="text-blue-600 hover:text-blue-800">Baca selengkapnya →</a></a>
                 </div>
             </div>
-
-            <!-- Post 2 -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden duration-500 transition-transform hover:scale-105"
-                data-aos-delay="100">
-                <img src="https://picsum.photos/id/60/400/250" alt="Berita 2" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2">PPDB 2024 Telah Dibuka</h3>
-                    <p class="text-gray-600 mb-4">Pendaftaran peserta didik baru tahun ajaran 2024/2025 telah
-                        dibuka. Segera daftarkan putra/putri Anda...</p>
-                    <a href="#" class="text-blue-600 hover:text-blue-800">Baca selengkapnya →</a>
-                </div>
-            </div>
-
-            <!-- Post 3 -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden duration-500 transition-transform hover:scale-105"
-                data-aos-delay="200">
-                <img src="https://picsum.photos/id/99/400/250" alt="Berita 3" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2">Prestasi di Bidang Seni</h3>
-                    <p class="text-gray-600 mb-4">Grup paduan suara SMP Cendekia meraih juara 1 dalam Festival Seni
-                        Pelajar tingkat Provinsi...</p>
-                    <a href="#" class="text-blue-600 hover:text-blue-800">Baca selengkapnya →</a>
-                </div>
-            </div>
+            @endforeach
         </div>
-
-        <div class="pagination text-center mt-12" data-aos="fade-up" data-aos-delay="200">
-            <a href="{{ route('blog.list') }}"
-                class="text-slate-200 font-medium p-3 bg-green-500 rounded-lg duration-500 inline-block transition-transform hover:text-white hover:bg-emerald-600 hover:scale-105">Post
-                Sebelumnya</a>
-        </div>
+    <div class="pagination text-center mt-12" data-aos="fade-up" data-aos-delay="200">
+        <a href="{{ route('blog.list') }}"
+            class="text-white font-medium p-3 bg-green-500 rounded-lg duration-500 inline-block transition-transform hover:text-white hover:bg-emerald-600 hover:scale-105">Post
+            Sebelumnya</a>
     </div>
+</div>
 </div>
 
 <!-- Program Unggulan -->

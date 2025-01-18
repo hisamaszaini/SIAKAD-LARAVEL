@@ -7,9 +7,11 @@ use App\Models\Mapel;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\Jadwal;
+use App\Models\Hari;
 use App\Models\User;
 use App\Models\Pengumuman;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -33,8 +35,15 @@ class DashboardController extends Controller
             return view('pages.admin.dashboard', compact('title', 'pages', 'authSam', 'guru', 'kelas', 'mapel', 'pengumuman', 'laki', 'perempuan'));
         } else if (($authSam->role) == 'Guru') {
             $guru_id = Guru::where('user_id', $authSam->id)->pluck('id');
-            $jadwal = Jadwal::where('guru_id', $guru_id)->get();
-            return view('pages.guru.dashboard', compact('title', 'pages', 'authSam', 'jadwal', 'laki', 'perempuan', 'guru_id', 'pengumuman'));
+            $hariSekarang = Carbon::now()->dayOfWeekIso;
+            
+            $jadwal = Jadwal::with(['mapel', 'ruang', 'guru', 'jamPelajaran', 'hari'])
+                ->where('guru_id', $guru_id)
+                ->where('hari_id', $hariSekarang)
+                ->orderBy('jam_pelajaran_id', 'asc')
+                ->get();
+
+            return view('pages.guru.dashboard', compact('title', 'pages', 'authSam', 'hariSekarang', 'jadwal', 'laki', 'perempuan', 'guru_id', 'pengumuman'));
         } else if (($authSam->role) == 'Siswa') {
             $siswa = Siswa::with('kelas')->where('user_id', $authSam->id)->first();
             if (!$siswa) {
@@ -42,13 +51,14 @@ class DashboardController extends Controller
             }
             $id_kelas = $siswa->kelas->id;
 
+            $hariSekarang = Carbon::now()->dayOfWeekIso;
             $jadwal = Jadwal::with(['mapel', 'ruang', 'guru', 'jamPelajaran', 'hari'])
                 ->where('kelas_id', $id_kelas)
-                ->orderBy('hari_id', 'asc')
+                ->where('hari_id', $hariSekarang)
                 ->orderBy('jam_pelajaran_id', 'asc')
                 ->get();
 
-            return view('pages.siswa.dashboard', compact('title', 'pages', 'authSam', 'siswa', 'jadwal', 'pengumuman'));
+            return view('pages.siswa.dashboard', compact('title', 'pages', 'authSam', 'siswa', 'hariSekarang', 'jadwal', 'pengumuman'));
         } else {
             //return view('pages.admin.dashboard.index', compact('pages', 'mapel', 'laki', 'perempuan'));
             echo "Role Tidak Ada!";

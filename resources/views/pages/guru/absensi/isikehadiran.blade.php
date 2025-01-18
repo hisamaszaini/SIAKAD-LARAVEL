@@ -61,7 +61,7 @@
 
                     <div class="card-footer text-right">
                         <button type="submit" class="btn btn-primary">Simpan Kehadiran</button>
-                        <a href="{{ route('guru.absensi.index') }}" class="btn btn-secondary">Batal</a>
+                        <a href="{{ route('guru.absensi.index') }}" class="btn btn-secondary">Kembali</a>
                     </div>
                 </form>
             </div>

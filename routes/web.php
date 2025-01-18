@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth:web', 'verified']], function () {
     Route::get('/profile', [UsersController::class, 'profile'])->name('profile');
     Route::put('/profile/updatePassword', [UsersController::class, 'updatePassword'])->name('updatePassword');
     Route::put('/profile/updateEmail', [UsersController::class, 'updateEmail'])->name('updateEmail');
+    Route::get('/siswa/kwitansi/{penagihanId}', [AdminTagihanController::class, 'kwitansiPenagihan'])->name('siswa.kwitansi');
 });
 
 //Admin
@@ -246,5 +247,3 @@ Route::group(['middleware' => ['auth:web', 'verified', 'is_role:Siswa']], functi
         Route::get('/tagihan', [SiswaController::class, 'lihatTagihan'])->name('siswa.tagihan');
     });
 });
-
-Route::get('/siswa/kwitansi/{penagihanId}', [AdminTagihanController::class, 'kwitansiPenagihan'])->name('siswa.kwitansi');

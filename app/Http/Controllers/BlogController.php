@@ -25,17 +25,16 @@ class BlogController extends Controller
         $kelasCount = $counts[0]->kelas_count;
         $siswaCount = $counts[0]->siswa_count;
         $settings = Settings::first();
-        $title = "SMP Cendikia Ponorogo | IT Iman Taqwa";
-        $posts = BlogPost::orderBy('id', 'desc')->take(3)->get();
-
-
+        $title = $settings->lembaga_nama . " | IT Iman Taqwa";
+        $posts = BlogPost::where('kategori_id', '2')->orWhere('kategori_id', '3')
+                ->orderBy('id', 'desc')->take(3)->get();
         return view('pages.blog.index', compact('title', 'posts', 'settings', 'guruCount', 'kelasCount', 'siswaCount'));
     }
 
     public function posts()
     {
         $settings = Settings::first();
-        $title = "Blog SMP Cendikia Ponorogo";
+        $title = "Blog " . $settings->lembaga_nama;
         $posts = BlogPost::orderBy('id', 'desc')->paginate(8);
         $categories = BlogKategori::all();
 

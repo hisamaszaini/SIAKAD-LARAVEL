@@ -9,6 +9,9 @@
                     <p> <a href="{{ route('blog.kategori', $kategori->slug) }}" class="text-base text-blue-500 hover:underline">{{ $kategori->nama }}</a> </p>
                     <h1 class="text-3xl font-bold mb-1 text-green-500">{{ $post->title }}</h1>
                     <span class="text-gray-600 text-sm">{{ $post->created_at->format('d F Y') }}</span>
+                    @if( $post->image )
+                    <img src="{{ asset('storage/uploads/' . $post->image) }}" alt="{{ $post->title }}" class="w-full object-cover mt-4 mb-4 rounded-md">
+                    @endif
                 </div>
 
                 <article class="prose max-w-none">

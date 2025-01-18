@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 use App\Exports\TagihanPenagihanExport;
+use App\Models\Settings;
 use Maatwebsite\Excel\Facades\Excel;
 
 class AdminTagihanController extends Controller
@@ -201,8 +202,10 @@ class AdminTagihanController extends Controller
             return redirect()->back()->with('error', 'Data penagihan tidak ditemukan.');
         }
 
+        $settings = Settings::first();
+
         $title = "Kwitansi Pembayaran";
-        return view('pages.admin.tagihan.kwitansi', compact('title', 'penagihan'));
+        return view('pages.admin.tagihan.kwitansi', compact('settings', 'title', 'penagihan'));
     }
 
     public function export($tagihanId)
